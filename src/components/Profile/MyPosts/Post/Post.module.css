@@ -1,0 +1,18 @@
+
+.post {
+  margin: 20px;
+}
+
+.item {
+  color: green;
+}
+
+.item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+}
+
+.item span {
+  color: white;
+}
