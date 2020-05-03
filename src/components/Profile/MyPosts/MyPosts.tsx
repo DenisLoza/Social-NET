@@ -1,16 +1,16 @@
 import React from 'react';
-import c from './MyPosts.module.css';
+import s from './MyPosts.module.css';
 import Post from './Post/Post';
 
 const MyPosts = () => {
     return (
-      <div className={c.myPosts}>
+      <div className={s.myPosts}>
         <div>
           Hello!
         </div>
-        <Post />
-        <Post />
-        <Post />
+        <Post message="Hello, how are you?" count="20" />
+        <Post message="It is my first post!" count="34" />
+        
       </div>
     );
 }
