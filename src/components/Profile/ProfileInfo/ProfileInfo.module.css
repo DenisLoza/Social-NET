@@ -1,0 +1,8 @@
+.profile {
+  grid-area: main;
+  
+}
+
+.descriptionBlock {
+  padding: 10px;
+}

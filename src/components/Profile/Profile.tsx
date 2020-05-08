@@ -1,15 +1,14 @@
 import React from 'react';
 import c from './Profile.module.css';
 import MyPosts from './MyPosts/MyPosts';
+import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 
 const Profile = () => {
     return (
       <main className={c.profile}>
-       <div className={c.item}>
-         AVA
-       </div>
-       <MyPosts />
+        <ProfileInfo />
+        <MyPosts />
       </main>
     );
 }
