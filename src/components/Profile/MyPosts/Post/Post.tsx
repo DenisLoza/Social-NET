@@ -1,9 +1,8 @@
 import React from 'react';
 import s from './Post.module.css';
 
-
-type PostType = {
-  message: string,
+export type PostType = {
+  message: string
   count: number
 }
 
