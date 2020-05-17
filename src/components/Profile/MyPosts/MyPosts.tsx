@@ -1,13 +1,10 @@
 import React from 'react';
 import s from './MyPosts.module.css';
-import Post, {PostType} from './Post/Post';
+import Post from './Post/Post';
+import {profilePageType} from "../../../redux/state";
 
 
-type MyPostsType = {
-    posts: Array<PostType>
-}
-
-const MyPosts = (props: MyPostsType) => {
+const MyPosts = (props: profilePageType ) => {
 
     let postsElements = props.posts
         .map( p => <Post message={p.message} count={p.count}/>);
