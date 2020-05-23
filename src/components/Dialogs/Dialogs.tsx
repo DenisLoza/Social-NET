@@ -13,6 +13,7 @@ const Dialogs = (props: dialogsPageType) => {
     let messagesElements = props.messages.
     map( m => <Message message={m.message}/>);
 
+
     return (
         <div className={s.dialogs}>
             <div className={s.dialogItems}>

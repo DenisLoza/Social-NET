@@ -1,3 +1,5 @@
+import {rerenderEntireTree} from "../render";
+
 export type postsType = {
     message: string,
     count: number
@@ -27,11 +29,7 @@ export type postandMassageType = {
     dialogsPage: dialogsPageType
 };
 
- export type stateType = {
-    state:postandMassageType
-}
-
-export let state = {
+export let state: postandMassageType = {
     profilePage: {
         posts: [
             {message: 'Hello, how are you?', count: 20},
@@ -59,4 +57,22 @@ export let state = {
     }
 };
 
-export default state;
+export type addPostType = (postMessage?: string) => void
+
+
+export type storeType = {
+    state: postandMassageType
+    addPost: addPostType
+}
+
+// Создаем стор, который передает значения стейта и функции addPost одновременно в одном объекте
+const store: storeType = {
+    state,
+    addPost: (postMessage = "new") => {
+        let newPost = {message: postMessage, count: 0};
+        state.profilePage.posts.push(newPost);
+        rerenderEntireTree(store);
+    }
+}
+
+export default store;

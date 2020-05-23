@@ -8,10 +8,11 @@ import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import {stateType} from "./redux/state";
+import {storeType} from "./redux/state";
 
 
-function App(props: stateType) {
+function App(props: storeType) {
+  console.log(props);
   return (
     <BrowserRouter>
     <div className="app-wrapper">
@@ -19,7 +20,7 @@ function App(props: stateType) {
       <Nav />
       <div className="app-wrapper-content">
         <Route path='/profile'
-               render={() => <Profile posts={props.state.profilePage.posts}/>} />
+               render={() => <Profile posts={props.state.profilePage.posts} addPost={props.addPost}/>} />
         <Route path='/dialogs'
                render={() => <Dialogs messages={props.state.dialogsPage.messages} dialogs={props.state.dialogsPage.dialogs} />} />
         <Route path='/news'

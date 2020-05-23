@@ -1,8 +1,10 @@
 .profile {
-  grid-area: main;
-  
-}
 
+}
+.avatar {
+  font-size: 20px;
+  padding: 10px;
+}
 .descriptionBlock {
   padding: 10px;
 }
