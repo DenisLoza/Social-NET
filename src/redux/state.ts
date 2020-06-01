@@ -1,5 +1,6 @@
 import {rerenderEntireTree} from "../render";
 
+
 export type postsType = {
     message: string,
     count: number
@@ -17,6 +18,7 @@ type messagesType = {
 
 export type profilePageType = {
     posts: Array<postsType>
+    newPostText: string
 };
 
 export type dialogsPageType = {
@@ -24,12 +26,12 @@ export type dialogsPageType = {
     messages: Array<messagesType>
 };
 
-export type postandMassageType = {
+export type postAndMassageType = {
     profilePage: profilePageType,
     dialogsPage: dialogsPageType
 };
 
-export let state: postandMassageType = {
+export let state: postAndMassageType = {
     profilePage: {
         posts: [
             {message: 'Hello, how are you?', count: 20},
@@ -37,7 +39,8 @@ export let state: postandMassageType = {
             {message: 'Fine', count: 34},
             {message: 'Ok', count: 34},
             {message: 'i love', count: 34},
-        ]
+        ],
+        newPostText: ""
     },
     dialogsPage: {
         dialogs: [
@@ -57,22 +60,31 @@ export let state: postandMassageType = {
     }
 };
 
-export type addPostType = (postMessage?: string) => void
-
+export type addPostType = (newText?: string) => void
+export type updateTextareaChangeType = (newText?: string) => void
 
 export type storeType = {
-    state: postandMassageType
+    state: postAndMassageType
     addPost: addPostType
+    updateTextareaChange: updateTextareaChangeType
 }
 
-// Создаем стор, который передает значения стейта и функции addPost одновременно в одном объекте
+// Создаем стор, который передает значения стейт и двух функций одновременно в одном объекте
 const store: storeType = {
     state,
-    addPost: (postMessage = "new") => {
-        let newPost = {message: postMessage, count: 0};
+    addPost: (newText= "") => {
+        let newPost = {message: state.profilePage.newPostText, count: 0};
         state.profilePage.posts.push(newPost);
+        state.profilePage.newPostText = "";
         rerenderEntireTree(store);
+    },
+    updateTextareaChange: (newText= "") => {
+    state.profilePage.newPostText = newText;
+    rerenderEntireTree(store);
     }
-}
+};
+
+
+(<any>window).state = state
 
 export default store;

@@ -9,7 +9,9 @@ export let rerenderEntireTree = (state: storeType) => {
     console.log(state);
     ReactDOM.render(
         <React.StrictMode>
-            <App state={state.state} addPost={state.addPost} />
+            <App state={state.state}
+                 addPost={state.addPost}
+                 updateTextareaChange={state.updateTextareaChange} />
         </React.StrictMode>,
         document.getElementById('root')
     );

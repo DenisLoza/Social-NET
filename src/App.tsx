@@ -20,9 +20,13 @@ function App(props: storeType) {
       <Nav />
       <div className="app-wrapper-content">
         <Route path='/profile'
-               render={() => <Profile posts={props.state.profilePage.posts} addPost={props.addPost}/>} />
+               render={() => <Profile posts={props.state.profilePage.posts}
+                                      addPost={props.addPost}
+                                      newPostText={props.state.profilePage.newPostText}
+                                      updateTextareaChange={props.updateTextareaChange} />} />
         <Route path='/dialogs'
-               render={() => <Dialogs messages={props.state.dialogsPage.messages} dialogs={props.state.dialogsPage.dialogs} />} />
+               render={() => <Dialogs messages={props.state.dialogsPage.messages}
+                                      dialogs={props.state.dialogsPage.dialogs} />} />
         <Route path='/news'
                render={() => <News />} />
         <Route path='/music'
