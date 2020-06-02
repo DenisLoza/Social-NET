@@ -12,7 +12,6 @@ import {storeType} from "./redux/state";
 
 
 function App(props: storeType) {
-  console.log(props);
   return (
     <BrowserRouter>
     <div className="app-wrapper">

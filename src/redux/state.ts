@@ -1,5 +1,6 @@
-import {rerenderEntireTree} from "../render";
-
+let rerenderEntireTree = (store: storeType) => {
+    console.log("")
+}
 
 export type postsType = {
     message: string,
@@ -80,10 +81,13 @@ const store: storeType = {
     },
     updateTextareaChange: (newText= "") => {
     state.profilePage.newPostText = newText;
-    rerenderEntireTree(store);
+        rerenderEntireTree(store);
     }
 };
 
+export const subscribe = (observer: any) => {
+    rerenderEntireTree = observer
+}
 
 (<any>window).state = state
 
