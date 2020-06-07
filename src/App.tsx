@@ -8,10 +8,14 @@ import Dialogs from './components/Dialogs/Dialogs';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import {storeType} from "./redux/state";
+import {postAndMessageType} from "./redux/state";
 
+type appType = {
+    appState: postAndMessageType
+    dispatch: (action: any) => any
+}
 
-function App(props: storeType) {
+function App(props: appType) {
   return (
     <BrowserRouter>
     <div className="app-wrapper">
@@ -19,13 +23,12 @@ function App(props: storeType) {
       <Nav />
       <div className="app-wrapper-content">
         <Route path='/profile'
-               render={() => <Profile posts={props.state.profilePage.posts}
-                                      addPost={props.addPost}
-                                      newPostText={props.state.profilePage.newPostText}
-                                      updateTextareaChange={props.updateTextareaChange} />} />
+               render={() => <Profile posts={props.appState.profilePage.posts}
+                                      newPostText={props.appState.profilePage.newPostText}
+                                      dispatch={props.dispatch} />} />
         <Route path='/dialogs'
-               render={() => <Dialogs messages={props.state.dialogsPage.messages}
-                                      dialogs={props.state.dialogsPage.dialogs} />} />
+               render={() => <Dialogs messages={props.appState.dialogsPage.messages}
+                                      dialogs={props.appState.dialogsPage.dialogs} />} />
         <Route path='/news'
                render={() => <News />} />
         <Route path='/music'

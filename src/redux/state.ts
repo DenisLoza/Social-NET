@@ -1,38 +1,28 @@
-let rerenderEntireTree = (store: storeType) => {
-    console.log("")
-}
-
 export type postsType = {
     message: string,
     count: number
 };
-
 type dialogsType = {
     id: number,
     name: string
 };
-
 type messagesType = {
     id: number,
     message: string
 };
-
-export type profilePageType = {
+type profilePageType = {
     posts: Array<postsType>
     newPostText: string
 };
-
 export type dialogsPageType = {
     dialogs: Array<dialogsType>,
     messages: Array<messagesType>
 };
-
-export type postAndMassageType = {
+export type postAndMessageType = {
     profilePage: profilePageType,
     dialogsPage: dialogsPageType
 };
-
-export let state: postAndMassageType = {
+export let _state: postAndMessageType = {
     profilePage: {
         posts: [
             {message: 'Hello, how are you?', count: 20},
@@ -60,35 +50,61 @@ export let state: postAndMassageType = {
         ]
     }
 };
-
-export type addPostType = (newText?: string) => void
-export type updateTextareaChangeType = (newText?: string) => void
+// export type addPostType = (newText?: string) => void
+// export type updateTextareaChangeType = (newText?: string) => void
 
 export type storeType = {
-    state: postAndMassageType
-    addPost: addPostType
-    updateTextareaChange: updateTextareaChangeType
-}
+    _state: postAndMessageType
+    rerenderEntireTree: any
+    subscribe: any
+    getState: () => postAndMessageType
+    dispatch: (action: any) => any
+    // addPost: addPostType
+    // updateTextareaChange: updateTextareaChangeType
+};
+// Задаем имена (type) для функций ActionCreator
+const addPostName: string = "ADD-POST";
+const updateTextAreaChangeName: string = "UPDATE-TEXT-AREA-CHANGE";
 
 // Создаем стор, который передает значения стейт и двух функций одновременно в одном объекте
 const store: storeType = {
-    state,
-    addPost: (newText= "") => {
-        let newPost = {message: state.profilePage.newPostText, count: 0};
-        state.profilePage.posts.push(newPost);
-        state.profilePage.newPostText = "";
-        rerenderEntireTree(store);
+    _state,
+    rerenderEntireTree (store: any) {
+        console.log("")
     },
-    updateTextareaChange: (newText= "") => {
-    state.profilePage.newPostText = newText;
-        rerenderEntireTree(store);
+    subscribe (observer: any)  {
+        this.rerenderEntireTree = observer
+    },
+    getState () {
+      return this._state
+    },
+    dispatch(action) {
+        if (action.type === addPostName) {
+            let newPost = {message: this._state.profilePage.newPostText, count: 0}
+            this._state.profilePage.posts.push(newPost)
+            this._state.profilePage.newPostText = ""
+            this.rerenderEntireTree(this._state)
+        } else if (action.type === updateTextAreaChangeName) {
+            this._state.profilePage.newPostText = action.newText
+            this.rerenderEntireTree(this._state)
+        }
+    },
+};
+// Функция ActionCreator dispatch для компоненты MyPosts
+export const addPostActionCreator = () => {
+    return {
+        type: addPostName
     }
 };
 
-export const subscribe = (observer: any) => {
-    rerenderEntireTree = observer
-}
+// Функция ActionCreator dispatch для компоненты MyPosts
+export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {
+    return {
+        type: updateTextAreaChangeName,
+        newText: newMessage
+    }
+};
 
-(<any>window).state = state
+(<any>window).store = store
 
 export default store;

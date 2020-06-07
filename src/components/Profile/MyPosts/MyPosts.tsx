@@ -2,6 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfileType} from "../Profile";
+import {addPostActionCreator, updateTextAreaChangeActionCreator} from "../../../redux/state";
 
 
 
@@ -16,14 +17,14 @@ const MyPosts = (props: ProfileType) => {
     // Обработчик события после нажатия на кнопку SEND
     let addMessage = () => {
         // Проверка на null необходима для TypeScript, т.е. если существует current тогда возьми current.value
-        let newMessage = newMessageElement.current && newMessageElement.current.value;
-        props.addPost(newMessage || undefined);
+        // let newMessage = newMessageElement.current && newMessageElement.current.value;
+        props.dispatch(addPostActionCreator());
     }
 
     // Следит за изменениями в поле ввода texarea
     let onTextareaChange = () => {
         let newMessage = newMessageElement.current && newMessageElement.current.value;
-        props.updateTextareaChange(newMessage || undefined);
+        props.dispatch(updateTextAreaChangeActionCreator(newMessage));
     }
 
     return (
