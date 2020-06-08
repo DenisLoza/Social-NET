@@ -1,3 +1,6 @@
+import profilePageReducer from "./profilePageReducer";
+import dialogsPageReducer from "./dialogsPageReducer";
+
 export type postsType = {
     message: string,
     count: number
@@ -32,13 +35,6 @@ export type storeType = {
     // addPost: addPostType
     // updateTextareaChange: updateTextareaChangeType
 };
-
-
-// Задаем имена (type) для функций ActionCreator
-const ADD_POST_NAME: string = "ADD_POST_NAME";
-const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE";
-const UPDATE_NEW_MESSAGE_DIALOG_BODY: string = "UPDATE_NEW_MESSAGE_DIALOG_BODY";
-const SEND_DIALOG_MESSAGE: string = "SEND_DIALOG_MESSAGE";
 
 
 export let _state: postAndMessageType = {
@@ -84,52 +80,13 @@ const store: storeType = {
       return this._state
     },
     dispatch(action) {
-        if (action.type === ADD_POST_NAME) {
-            let newPost = {message: this._state.profilePage.newPostText, count: 0}
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPostText = ""
-            this.rerenderEntireTree(this._state)
-        } else if (action.type === UPDATE_TEXT_AREA_CHANGE) {
-            this._state.profilePage.newPostText = action.newMessage
-            this.rerenderEntireTree(this._state)
-        } else if (action.type === UPDATE_NEW_MESSAGE_DIALOG_BODY) {
-            this._state.dialogsPage.newMessageDialogBody = action.body
-            this.rerenderEntireTree(this._state)
-        } else if (action.type === SEND_DIALOG_MESSAGE) {
-            let newBody = {id: 6, message: this._state.dialogsPage.newMessageDialogBody}
-            this._state.dialogsPage.messages.push(newBody)
-            this._state.dialogsPage.newMessageDialogBody = ""
-            this.rerenderEntireTree(this._state)
-        }
+        this._state.profilePage = profilePageReducer(this._state.profilePage, action)
+        this._state.dialogsPage = dialogsPageReducer(this._state.dialogsPage, action)
 
-    },
-};
-// Функция ActionCreator dispatch для компоненты MyPosts
-export const addPostNameActionCreator = () => {
-    return {
-        type: ADD_POST_NAME
+        this.rerenderEntireTree(this._state)
     }
 };
-// Функция ActionCreator dispatch для компоненты MyPosts
-export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {
-    return {
-        type: UPDATE_TEXT_AREA_CHANGE,
-        newMessage: newMessage
-    }
-};
-// Функция ActionCreator dispatch для компоненты Dialogs
-export const sendDialogMessageActionCreator = () => {
-    return {
-        type: SEND_DIALOG_MESSAGE
-    }
-}
-// Функция ActionCreator dispatch для компоненты Dialogs
-export const updateNewMessageDialogBodyActionCreator = (body: string | null) => {
-    return {
-        type: UPDATE_NEW_MESSAGE_DIALOG_BODY,
-        body: body
-    }
-}
+
 
 (<any>window).store = store
 

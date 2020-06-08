@@ -2,7 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfileType} from "../Profile";
-import {addPostNameActionCreator, updateTextAreaChangeActionCreator} from "../../../redux/state";
+import {addPostNameActionCreator, updateTextAreaChangeActionCreator} from "../../../redux/profilePageReducer";
 
 
 const MyPosts = (props: ProfileType) => {
