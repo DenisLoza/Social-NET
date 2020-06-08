@@ -8,3 +8,7 @@
   text-decoration: none;
 }
 
+/*Поведение активной ссылки меню*/
+.activeLink {
+  font-weight: bold;
+}

@@ -2,8 +2,7 @@ import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {ProfileType} from "../Profile";
-import {addPostActionCreator, updateTextAreaChangeActionCreator} from "../../../redux/state";
-
+import {addPostNameActionCreator, updateTextAreaChangeActionCreator} from "../../../redux/state";
 
 
 const MyPosts = (props: ProfileType) => {
@@ -11,19 +10,20 @@ const MyPosts = (props: ProfileType) => {
     let postsElements = props.posts
         .map( p => <Post message={p.message} count={p.count}/>);
 
-    // Создаем переменную, которая позволяет получить доступ к состоянию <textarea>
-    let newMessageElement = React.createRef<HTMLTextAreaElement>();
 
     // Обработчик события после нажатия на кнопку SEND
     let addMessage = () => {
-        // Проверка на null необходима для TypeScript, т.е. если существует current тогда возьми current.value
-        // let newMessage = newMessageElement.current && newMessageElement.current.value;
-        props.dispatch(addPostActionCreator());
+        props.dispatch(addPostNameActionCreator());
     }
 
+    // Создаем переменную, которая позволяет получить доступ к состоянию <textarea>
+    // let newMessageElement = React.createRef<HTMLTextAreaElement>();
     // Следит за изменениями в поле ввода texarea
-    let onTextareaChange = () => {
-        let newMessage = newMessageElement.current && newMessageElement.current.value;
+
+    let onTextareaChange = (e: any) => {
+        // Проверка на null необходима для TypeScript, т.е. если существует current тогда возьми current.value
+        // let newMessage = newMessageElement.current && newMessageElement.current.value;
+        let newMessage = e.target.value;
         props.dispatch(updateTextAreaChangeActionCreator(newMessage));
     }
 
@@ -35,17 +35,17 @@ const MyPosts = (props: ProfileType) => {
             <div className={s.inputField}>
               <textarea className={s.textarea}
                         // следит за введенными значениями в поле
-                        onChange={onTextareaChange}
+                        onChange={ onTextareaChange }
                         // значение, которое отобразиться в поле ввода
-                        value={props.newPostText}
-                        ref={newMessageElement}/>
+                        value={ props.newPostText }
+                        // ref={ newMessageElement }
+              />
                 <button className={s.button}
                         // следит за нажатиями на клавишу
-                        onClick={addMessage}>SEND
-                </button>
+                        onClick={ addMessage }>SEND</button>
             </div>
             <div className={s.postsElements}>
-                {postsElements}
+                { postsElements }
             </div>
         </div>
     );
