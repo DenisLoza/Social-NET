@@ -10,6 +10,7 @@ import Music from './components/Music/Music'
 import Settings from './components/Settings/Settings'
 import {profilePageType} from "./redux/profilePageReducer"
 import {dialogsPageType} from "./redux/dialogsPageReducer"
+import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 export type postAndMessageType = {
     profilePage: profilePageType,
@@ -32,7 +33,7 @@ function App(props: appType) {
                                                   newPostText={props.appState.profilePage.newPostText}
                                                   dispatch={props.dispatch}/>}/>
                     <Route path='/dialogs'
-                           render={() => <Dialogs messages={props.appState.dialogsPage.messages}
+                           render={() => <DialogsContainer messages={props.appState.dialogsPage.messages}
                                                   dialogs={props.appState.dialogsPage.dialogs}
                                                   newMessageDialogBody={props.appState.dialogsPage.newMessageDialogBody}
                                                   dispatch={props.dispatch}/>}/>

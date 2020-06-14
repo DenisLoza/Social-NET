@@ -1,30 +1,28 @@
 import React from 'react'
 import s from './MyPosts.module.css'
 import Post from './Post/Post';
-import {addPostNameActionCreator, updateTextAreaChangeActionCreator} from "../../../redux/profilePageReducer"
-import {ProfileType} from "../Profile"
+import {postsType} from "../../../redux/profilePageReducer"
 
+type MyPostsType = {
+    posts: postsType[]
+    newPostText: string
+    addPostName: () => void
+    updateTextAreaChange: (newMessage: string) => void
+}
 
-const MyPosts = (props: ProfileType) => {
+const MyPosts = (props: MyPostsType) => {
 
     let postsElements = props.posts
         .map(p => <Post message={p.message} count={p.count}/>)
 
 
-    // Обработчик события после нажатия на кнопку SEND
     let addMessage = () => {
-        props.dispatch(addPostNameActionCreator())
+        props.addPostName()
     }
 
-    // Создаем переменную, которая позволяет получить доступ к состоянию <textarea>
-    // let newMessageElement = React.createRef<HTMLTextAreaElement>();
-    // Следит за изменениями в поле ввода texarea
-
     let onTextareaChange = (e: any) => {
-        // Проверка на null необходима для TypeScript, т.е. если существует current тогда возьми current.value
-        // let newMessage = newMessageElement.current && newMessageElement.current.value;
         let newMessage = e.target.value
-        props.dispatch(updateTextAreaChangeActionCreator(newMessage))
+        props.updateTextAreaChange(newMessage)
     }
 
     return (
@@ -38,7 +36,6 @@ const MyPosts = (props: ProfileType) => {
                         onChange={onTextareaChange}
                   // значение, которое отобразиться в поле ввода
                         value={props.newPostText}
-                  // ref={ newMessageElement }
               />
                 <button className={s.button}
                     // следит за нажатиями на клавишу
