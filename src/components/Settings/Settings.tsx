@@ -1,11 +1,12 @@
-import React from 'react';
+import React from 'react'
 import s from './Settings.module.css';
 
 const Settings = () => {
     return (
-        <div className="Settings">
+        <div className="s.settings">
             Settings
         </div>
     )
 }
-export default Settings;
+
+export default Settings

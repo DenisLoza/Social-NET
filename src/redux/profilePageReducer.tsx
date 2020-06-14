@@ -1,7 +1,27 @@
-const ADD_POST_NAME: string = "ADD_POST_NAME";
-const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE";
+export type postsType = {
+    message: string,
+    count: number
+}
+export type profilePageType = {
+    posts: Array<postsType>
+    newPostText: string
+}
 
-const profilePageReducer = (state: any, action: any) => {
+const ADD_POST_NAME: string = "ADD_POST_NAME"
+const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE"
+
+let initialState = {
+    posts: [
+        {message: 'Hello, how are you?', count: 20},
+        {message: 'It is my first post!', count: 34},
+        {message: 'Fine', count: 34},
+        {message: 'Ok', count: 34},
+        {message: 'i love', count: 34},
+    ],
+    newPostText: ""
+}
+
+const profilePageReducer = (state: profilePageType = initialState, action: any) => {
 
     switch (action.type) {
         case ADD_POST_NAME:

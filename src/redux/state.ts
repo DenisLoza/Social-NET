@@ -1,32 +1,32 @@
 import profilePageReducer from "./profilePageReducer";
 import dialogsPageReducer from "./dialogsPageReducer";
 
-export type postsType = {
+type postsType = {
     message: string,
     count: number
-};
-export type dialogsType = {
+}
+type dialogsType = {
     id: number,
     name: string
-};
-export type messagesType = {
+}
+type messagesType = {
     id: number,
     message: string
-};
+}
 type profilePageType = {
     posts: Array<postsType>
     newPostText: string
-};
-export type dialogsPageType = {
+}
+type dialogsPageType = {
     dialogs: Array<dialogsType>,
     messages: Array<messagesType>,
     newMessageDialogBody: string
-};
-export type postAndMessageType = {
+}
+type postAndMessageType = {
     profilePage: profilePageType,
     dialogsPage: dialogsPageType
-};
-export type storeType = {
+}
+type storeType = {
     _state: postAndMessageType
     rerenderEntireTree: any
     subscribe: any
@@ -34,10 +34,10 @@ export type storeType = {
     dispatch: (action: any) => any
     // addPost: addPostType
     // updateTextareaChange: updateTextareaChangeType
-};
+}
 
 
-export let _state: postAndMessageType = {
+let _state: postAndMessageType = {
     profilePage: {
         posts: [
             {message: 'Hello, how are you?', count: 20},
@@ -65,7 +65,7 @@ export let _state: postAndMessageType = {
         ],
         newMessageDialogBody: ""
     }
-};
+}
 
 // Создаем стор, который передает значения стейт и других функций одновременно в одном объекте
 const store: storeType = {
