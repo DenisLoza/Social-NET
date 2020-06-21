@@ -35,15 +35,29 @@ let initialState = {
 
 const dialogsPageReducer = (state: dialogsPageType = initialState, action: any) => {
 
+    // делаем поверхностную копию стейта СПРЕД ОПЕРАТОРОМ(...). Таким образов копируются только примитивы, без вложенных объектов!!!
+    let stateCopy
+    // stateCopy = {...state}
+    // stateCopy.messages = [...state.messages]
+
     switch (action.type) {
         case UPDATE_NEW_MESSAGE_DIALOG_BODY:
-            state.newMessageDialogBody = action.body
-            return state
+            stateCopy = {
+                ...state,
+                newMessageDialogBody: action.body
+            }
+            // stateCopy.newMessageDialogBody = action.body
+            return stateCopy
         case SEND_DIALOG_MESSAGE:
             let newBody = {id: 6, message: state.newMessageDialogBody}
-            state.messages.push(newBody)
-            state.newMessageDialogBody = ""
-            return state
+            stateCopy = {
+                ...state,
+                messages: [...state.messages, newBody],
+                newMessageDialogBody: ""
+            }
+            // stateCopy.newMessageDialogBody = ""
+            // stateCopy.messages.push(newBody)
+            return stateCopy
         default:
             return state
     }

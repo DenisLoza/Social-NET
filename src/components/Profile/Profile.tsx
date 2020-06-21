@@ -10,14 +10,15 @@ export type ProfileType = {
     dispatch: (action: any) => any
 }
 
-
-const Profile = (props: ProfileType) => {
+// Profile = (props: ProfileType)
+const Profile = () => {
     return (
         <main className={c.profile}>
             <ProfileInfo/>
-            <MyPostsContainer posts={props.posts}
-                              newPostText={props.newPostText}
-                              dispatch={props.dispatch}/>
+            <MyPostsContainer/>
+                {/*// posts={props.posts}*/}
+                {/*//               newPostText={props.newPostText}*/}
+                {/*//               dispatch={props.dispatch}/>*/}
         </main>
     )
 }

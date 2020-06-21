@@ -23,15 +23,31 @@ let initialState = {
 
 const profilePageReducer = (state: profilePageType = initialState, action: any) => {
 
+    let stateCopy
+
     switch (action.type) {
         case ADD_POST_NAME:
             let newPost = {message: state.newPostText, count: 0}
-            state.posts.push(newPost)
-            state.newPostText = ""
-            return state
+            // делаем копию стейта. Таким образов копируются только примитивы, без вложенных объектов!!!
+            stateCopy = {
+                ...state,
+                posts: [...state.posts, newPost],
+                newPostText: ""
+            }
+            // поэтому дополнительно копируем вложенный объект posts
+            // stateCopy.newPostText = ""
+            // stateCopy.posts = [...state.posts]
+            // stateCopy.posts.push(newPost)
+            return stateCopy
+
         case UPDATE_TEXT_AREA_CHANGE:
-            state.newPostText = action.newMessage
-            return state
+            stateCopy = {
+                ...state,
+                newPostText: action.newMessage
+            }
+            // stateCopy.newPostText = action.newMessage
+            return stateCopy
+
         default:
             return state
     }

@@ -17,10 +17,10 @@ type newDialogsPageType = {
 const Dialogs = (props: newDialogsPageType) => {
 
     let dialogsElemets = props.dialogs.
-    map( d => <DialogItem name={d.name} id={d.id}/>)
+    map( d => <DialogItem name={d.name} id={d.id} />)
 
     let messagesElements = props.messages.
-    map( m => <Message message={m.message}/>)
+    map( m => <Message message={m.message} />)
 
 
     let onUpdateNewMessageDialogBodyChange = (e: any) => {
