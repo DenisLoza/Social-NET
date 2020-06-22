@@ -1,12 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorker'
+import {Provider} from "react-redux";
 import store from "./redux/redux-store"
 import './index.css'
-import App, {postAndMessageType} from './App'
-import {Provider} from "react-redux";
+import App from './App'
 
-// rerenderEntireTree = (state: postAndMessageType)
 
     ReactDOM.render(
         <React.StrictMode>
@@ -16,18 +15,5 @@ import {Provider} from "react-redux";
         </React.StrictMode>,
         document.getElementById('root')
     )
-
-{/*<App appState={state}*/}
-{/*dispatch={store.dispatch.bind(store)}/>*/}
-
-// Функция для перерисовки App
-// rerenderEntireTree()
-
-
-// store.subscribe(() => {
-//     let state = store.getState()
-//     rerenderEntireTree(state)
-// })
-
 
 serviceWorker.unregister()

@@ -1,33 +1,42 @@
+import {v1} from "uuid";
+
 export type postsType = {
-    message: string,
+    id: string
+    message: string
     count: number
 }
 export type profilePageType = {
     posts: Array<postsType>
     newPostText: string
 }
+export type actionProfilePageType = {
+    type: string
+    newMessage: string
+}
+
 
 const ADD_POST_NAME: string = "ADD_POST_NAME"
 const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE"
 
+
 let initialState = {
     posts: [
-        {message: 'Hello, how are you?', count: 20},
-        {message: 'It is my first post!', count: 34},
-        {message: 'Fine', count: 34},
-        {message: 'Ok', count: 34},
-        {message: 'i love', count: 34},
+        {id: v1(), message: 'Hello, how are you?', count: 20},
+        {id: v1(), message: 'It is my first post!', count: 34},
+        {id: v1(), message: 'Fine', count: 34},
+        {id: v1(), message: 'Ok', count: 34},
+        {id: v1(), message: 'i love', count: 34},
     ],
     newPostText: ""
 }
 
-const profilePageReducer = (state: profilePageType = initialState, action: any) => {
+const profilePageReducer = (state: profilePageType = initialState, action: actionProfilePageType) => {
 
     let stateCopy
 
     switch (action.type) {
         case ADD_POST_NAME:
-            let newPost = {message: state.newPostText, count: 0}
+            let newPost = {id: v1(), message: state.newPostText, count: 0}
             // делаем копию стейта. Таким образов копируются только примитивы, без вложенных объектов!!!
             stateCopy = {
                 ...state,

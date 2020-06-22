@@ -7,9 +7,14 @@
     padding: 10px;
 }
 
-.dialogItems .active {
-    color: gold;
+.dialogItems a {
+    text-decoration: none;
 }
+
+.activeLink {
+    font-weight: bold;
+}
+
 .message {
     padding: 10px;
 }

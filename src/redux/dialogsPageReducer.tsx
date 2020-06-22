@@ -1,15 +1,21 @@
+import {v1} from "uuid";
+
 export type dialogsType = {
-    id: number,
+    id: string
     name: string
 }
 export type messagesType = {
-    id: number,
+    id: string
     message: string
 }
 export type dialogsPageType = {
-    dialogs: Array<dialogsType>,
-    messages: Array<messagesType>,
+    dialogs: Array<dialogsType>
+    messages: Array<messagesType>
     newMessageDialogBody: string
+}
+export type actionDialogsPageType = {
+    type: string
+    body: string
 }
 
 const UPDATE_NEW_MESSAGE_DIALOG_BODY: string = "UPDATE_NEW_MESSAGE_DIALOG_BODY"
@@ -17,23 +23,23 @@ const SEND_DIALOG_MESSAGE: string = "SEND_DIALOG_MESSAGE"
 
 let initialState = {
     dialogs: [
-        {id: 1, name: 'Dima'},
-        {id: 2, name: 'Sweta'},
-        {id: 3, name: 'Katya'},
-        {id: 4, name: 'Nadya'},
-        {id: 5, name: 'Dan'},
+        {id: v1(), name: 'Dima'},
+        {id: v1(), name: 'Sweta'},
+        {id: v1(), name: 'Katya'},
+        {id: v1(), name: 'Nadya'},
+        {id: v1(), name: 'Dan'},
     ],
     messages: [
-        {id: 1, message: 'Hi'},
-        {id: 2, message: 'How are you?'},
-        {id: 3, message: 'Fine'},
-        {id: 4, message: 'Ok'},
-        {id: 5, message: 'i love'},
+        {id: v1(), message: 'Hi'},
+        {id: v1(), message: 'How are you?'},
+        {id: v1(), message: 'Fine'},
+        {id: v1(), message: 'Ok'},
+        {id: v1(), message: 'i love'},
     ],
     newMessageDialogBody: ""
 }
 
-const dialogsPageReducer = (state: dialogsPageType = initialState, action: any) => {
+const dialogsPageReducer = (state: dialogsPageType = initialState, action: actionDialogsPageType) => {
 
     // делаем поверхностную копию стейта СПРЕД ОПЕРАТОРОМ(...). Таким образов копируются только примитивы, без вложенных объектов!!!
     let stateCopy
@@ -49,7 +55,7 @@ const dialogsPageReducer = (state: dialogsPageType = initialState, action: any) 
             // stateCopy.newMessageDialogBody = action.body
             return stateCopy
         case SEND_DIALOG_MESSAGE:
-            let newBody = {id: 6, message: state.newMessageDialogBody}
+            let newBody = {id: v1(), message: state.newMessageDialogBody}
             stateCopy = {
                 ...state,
                 messages: [...state.messages, newBody],

@@ -1,3 +1,4 @@
+import a from "./_state"
 import {combineReducers, createStore} from "redux"
 import profilePageReducer from "./profilePageReducer"
 import dialogsPageReducer from "./dialogsPageReducer"

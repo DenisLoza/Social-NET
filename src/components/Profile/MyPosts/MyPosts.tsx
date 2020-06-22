@@ -12,9 +12,8 @@ type MyPostsType = {
 
 const MyPosts = (props: MyPostsType) => {
 
-    let postsElements = props.posts
-        .map(p => <Post message={p.message} count={p.count}/>)
-
+    let postsElements: JSX.Element[] = props.posts
+        .map(p => <Post message={p.message} count={p.count} id={p.id} key={p.id}/>)
 
     let addMessage = () => {
         props.addPostName()

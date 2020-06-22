@@ -16,12 +16,9 @@ type newDialogsPageType = {
 
 const Dialogs = (props: newDialogsPageType) => {
 
-    let dialogsElemets = props.dialogs.
-    map( d => <DialogItem name={d.name} id={d.id} />)
+    let dialogsElemets: JSX.Element[] = props.dialogs.map( d => <DialogItem id={d.id} name={d.name} key={d.id}/>)
 
-    let messagesElements = props.messages.
-    map( m => <Message message={m.message} />)
-
+    let messagesElements: JSX.Element[] = props.messages.map( m => <Message message={m.message} key={m.id}/>)
 
     let onUpdateNewMessageDialogBodyChange = (e: any) => {
         let body = e.target.value
