@@ -23,18 +23,18 @@ const SEND_DIALOG_MESSAGE: string = "SEND_DIALOG_MESSAGE"
 
 let initialState = {
     dialogs: [
-        {id: v1(), name: 'Dima'},
-        {id: v1(), name: 'Sweta'},
-        {id: v1(), name: 'Katya'},
-        {id: v1(), name: 'Nadya'},
-        {id: v1(), name: 'Dan'},
+        {id: v1(), name: "Denis L."},
+        {id: v1(), name: "Dmitry K."},
+        {id: v1(), name: "Nastya L."},
+        {id: v1(), name: "Anna A."},
+        {id: v1(), name: "Andrew Z."}
     ],
     messages: [
-        {id: v1(), message: 'Hi'},
-        {id: v1(), message: 'How are you?'},
-        {id: v1(), message: 'Fine'},
-        {id: v1(), message: 'Ok'},
-        {id: v1(), message: 'i love'},
+        {id: v1(), message: "hi!"},
+        {id: v1(), message: "how are you?"},
+        {id: v1(), message: "I am fine"},
+        {id: v1(), message: "and you?"},
+        {id: v1(), message: "thanks, I am Ok!"}
     ],
     newMessageDialogBody: ""
 }

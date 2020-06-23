@@ -1,5 +1,6 @@
 import React from 'react'
 import s from './Post.module.css'
+import avatar from "../../../../img/avatar/man_5.jpg"
 import {postsType} from "../../../../redux/profilePageReducer";
 
 
@@ -7,8 +8,7 @@ const Post = (props: postsType) => {
     return (
         <div className={s.post}>
             <div className={s.item}>
-                <img alt="avatar" src="https://encrypted-tbn0.gstatic.com/
-        images?q=tbn%3AANd9GcQ5SL2L701AIjiyU-6DuRIKUDJv1iyemeo--m0_LdszZq8NvQnU&usqp=CAU"/>
+                <img alt="avatar" src={avatar}/>
                 {props.message}
                 <div>
                     <span>like {props.count}</span>

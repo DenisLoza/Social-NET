@@ -21,11 +21,11 @@ const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE"
 
 let initialState = {
     posts: [
-        {id: v1(), message: 'Hello, how are you?', count: 20},
-        {id: v1(), message: 'It is my first post!', count: 34},
-        {id: v1(), message: 'Fine', count: 34},
-        {id: v1(), message: 'Ok', count: 34},
-        {id: v1(), message: 'i love', count: 34},
+        {id: v1(), message: "Hello, how are you?", count: 20},
+        {id: v1(), message: "It is my first post!", count: 55},
+        {id: v1(), message: "This is great!", count: 30},
+        {id: v1(), message: "What do you mean about?", count: 22},
+        {id: v1(), message: "I am so happy!", count: 43},
     ],
     newPostText: ""
 }
