@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import {followAC, setUsersAC, unfollowAC, usersArrayType} from "../../redux/usersPageReducer";
-import Users from "./Users";
+import Users from "./UsersC";
 
 
 type UsersContainerPageType = {
@@ -14,7 +14,6 @@ let mapStateToProps = (state: UsersContainerPageType) => {
         users: state.usersPage.users
     }
 }
-
 // передает дочерней компоненте Users ф-ции callback
 let mapDispatchToProps = (dispatch: any) => {
     return {

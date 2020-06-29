@@ -23,11 +23,11 @@ const SEND_DIALOG_MESSAGE: string = "SEND_DIALOG_MESSAGE"
 
 let initialState = {
     dialogs: [
-        {id: v1(), name: "Denis L."},
-        {id: v1(), name: "Dmitry K."},
-        {id: v1(), name: "Nastya L."},
-        {id: v1(), name: "Anna A."},
-        {id: v1(), name: "Andrew Z."}
+        {id: v1(), name: "Denis"},
+        {id: v1(), name: "Dmitry"},
+        {id: v1(), name: "Nastya"},
+        {id: v1(), name: "Anna"},
+        {id: v1(), name: "Andrew"}
     ],
     messages: [
         {id: v1(), message: "hi!"},

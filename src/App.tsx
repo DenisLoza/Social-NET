@@ -11,9 +11,10 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import UsersContainer from "./components/Users/UsersContainer";
 
 
+
 function App() {
     // route следит только за путем в браузере, если он совпадает
-    // с path, тогда рендерит то что в render и удаляет другие рендеры
+    // с path, тогда рендерит то что в render и удаляет другие рендерыy
     return (
         <BrowserRouter>
             <div className="app-wrapper">
