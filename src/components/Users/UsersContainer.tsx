@@ -7,11 +7,53 @@ import {
     unfollowAC,
     usersArrayType
 } from "../../redux/usersPageReducer";
-import Users from "./UsersC";
+import React from "react";
+import axios from "axios";
+import UsersFunctional from "./UsersFunctional";
 
 
 type UsersContainerPageType = {
     usersPage: usersArrayType
+}
+
+class UsersC extends React.Component<any, any>{
+
+    // constructor(props: any) {
+    //     super(props);
+    //     axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+    //         this.props.setUsers(response.data.items)
+    //     });
+    // }
+    componentDidMount() {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
+            this.props.setUsers(response.data.items)
+        });
+    }
+    onPageChanged = (pageNumber: number) => {
+        this.props.setCurrentPage(pageNumber)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
+            this.props.setUsers(response.data.items)
+            let a = response.data.totalCount
+            // если мы получим от сервера общее кол-во пользователей более 100, то отобразить только 100
+            if (a > 100) {
+                let b = 100
+                this.props.setTotalUsersCount(b)
+            } else {
+                this.props.setTotalUsersCount(a)
+            }
+        });
+    }
+
+    render() {
+        return <UsersFunctional totalPagesCount={this.props.totalPagesCount}
+                                pageSize={this.props.pageSize}
+                                currentPage={this.props.currentPage}
+                                onPageChanged={this.onPageChanged}
+                                users={this.props.users}
+                                unfollow={this.props.unfollow}
+                                follow={this.props.follow}
+        />
+    }
 }
 
 
@@ -45,5 +87,5 @@ let mapDispatchToProps = (dispatch: any) => {
     }
 }
 
-const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users)
+const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersC)
 export default UsersContainer
