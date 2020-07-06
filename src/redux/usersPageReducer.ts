@@ -15,62 +15,74 @@ export type userType = {
 }
 export type usersArrayType = {
     users: Array<userType>
+    pageSize: number,
+    totalPagesCount: number,
+    currentPage: number
 }
 export type actionUsersType = {
     type: string
     userId: string
     users: Array<userType>
+    currentPage: number
+    totalCount: number
 }
 
 const FOLLOW = "FOLLOW"
 const UNFOLLOW = "UNFOLLOW"
 const SET_USERS = "SET_USERS"
-
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
+const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT"
 
 let initialState = {
-    users: [
-        {
-            id: v1(),
-            fullName: "Denis L.",
-            status: "I'am programmer",
-            location: {city: "Helsinki", country: "Finland"},
-            avatarImg: man_5,
-            followed: true
-        },
-        {
-            id: v1(),
-            fullName: "Dmitry K.",
-            status: "I'am teacher",
-            location: {city: "Minsk", country: "Belarus"},
-            avatarImg: ava_man,
-            followed: true
-        },
-        {
-            id: v1(),
-            fullName: "Nastya L.",
-            status: "I'am photographer",
-            location: {city: "Moskow", country: "Russia"},
-            avatarImg: ava_girl,
-            followed: false
-        },
-        {
-            id: v1(),
-            fullName: "Anna A.",
-            status: "I'am consultant",
-            location: {city: "St.Petersburg", country: "Russia"},
-            avatarImg: girl_2,
-            followed: true
-        },
-        {
-            id: v1(),
-            fullName: "Andrew Z.",
-            status: "I'am engineer",
-            location: {city: "Lappeenranta", country: "Finland"},
-            avatarImg: man_4,
-            followed: true
-        }
-    ]
+    users: [],
+    pageSize: 5,
+    totalPagesCount: 30,
+    currentPage: 1
 }
+// let initialState = {
+//     users: [
+//         {
+//             id: v1(),
+//             fullName: "Denis L.",
+//             status: "I'am programmer",
+//             location: {city: "Helsinki", country: "Finland"},
+//             avatarImg: man_5,
+//             followed: true
+//         },
+//         {
+//             id: v1(),
+//             fullName: "Dmitry K.",
+//             status: "I'am teacher",
+//             location: {city: "Minsk", country: "Belarus"},
+//             avatarImg: ava_man,
+//             followed: true
+//         },
+//         {
+//             id: v1(),
+//             fullName: "Nastya L.",
+//             status: "I'am photographer",
+//             location: {city: "Moskow", country: "Russia"},
+//             avatarImg: ava_girl,
+//             followed: false
+//         },
+//         {
+//             id: v1(),
+//             fullName: "Anna A.",
+//             status: "I'am consultant",
+//             location: {city: "St.Petersburg", country: "Russia"},
+//             avatarImg: girl_2,
+//             followed: true
+//         },
+//         {
+//             id: v1(),
+//             fullName: "Andrew Z.",
+//             status: "I'am engineer",
+//             location: {city: "Lappeenranta", country: "Finland"},
+//             avatarImg: man_4,
+//             followed: true
+//         }
+//     ]
+// }
 
 const usersPageReducer = (state: usersArrayType = initialState, action: actionUsersType) => {
 
@@ -98,7 +110,13 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
             }
 
         case SET_USERS:
-            return {...state, users: [...state.users, ...action.users]}
+            return {...state, users: action.users}
+
+        case SET_CURRENT_PAGE:
+            return {...state, currentPage: action.currentPage}
+
+        case SET_TOTAL_USERS_COUNT:
+            return {...state, totalPagesCount: action.totalCount}
 
         default:
             return state
@@ -108,6 +126,8 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
 export const followAC = (userId: string) => ({type: FOLLOW, userId})
 export const unfollowAC = (userId: string) => ({type: UNFOLLOW, userId})
 export const setUsersAC = (users: usersArrayType) => ({type: SET_USERS, users})
+export const setCurrentPageAC = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage})
+export const setTotalUsersCountAC = (totalCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalCount})
 
 
 // export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {

@@ -1,5 +1,12 @@
 import {connect} from "react-redux";
-import {followAC, setUsersAC, unfollowAC, usersArrayType} from "../../redux/usersPageReducer";
+import {
+    followAC,
+    setCurrentPageAC,
+    setTotalUsersCountAC,
+    setUsersAC,
+    unfollowAC,
+    usersArrayType
+} from "../../redux/usersPageReducer";
 import Users from "./UsersC";
 
 
@@ -11,7 +18,10 @@ type UsersContainerPageType = {
 // передает дочерней компоненте Users данные из state
 let mapStateToProps = (state: UsersContainerPageType) => {
     return {
-        users: state.usersPage.users
+        users: state.usersPage.users,
+        pageSize: state.usersPage.pageSize,
+        totalPagesCount: state.usersPage.totalPagesCount,
+        currentPage: state.usersPage.currentPage
     }
 }
 // передает дочерней компоненте Users ф-ции callback
@@ -25,6 +35,12 @@ let mapDispatchToProps = (dispatch: any) => {
         },
         setUsers: (users: usersArrayType) => {
             dispatch(setUsersAC(users))
+        },
+        setCurrentPage: (currentPage: number) => {
+            dispatch(setCurrentPageAC(currentPage))
+        },
+        setTotalUsersCount: (totalCount: number) => {
+            dispatch(setTotalUsersCountAC(totalCount))
         }
     }
 }
