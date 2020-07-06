@@ -17,7 +17,8 @@ export type usersArrayType = {
     users: Array<userType>
     pageSize: number,
     totalPagesCount: number,
-    currentPage: number
+    currentPage: number,
+    isFetching: boolean
 }
 export type actionUsersType = {
     type: string
@@ -25,6 +26,7 @@ export type actionUsersType = {
     users: Array<userType>
     currentPage: number
     totalCount: number
+    isFetching: boolean
 }
 
 const FOLLOW = "FOLLOW"
@@ -32,12 +34,14 @@ const UNFOLLOW = "UNFOLLOW"
 const SET_USERS = "SET_USERS"
 const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
 const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT"
+const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
 
 let initialState = {
     users: [],
     pageSize: 5,
     totalPagesCount: 30,
-    currentPage: 1
+    currentPage: 1,
+    isFetching: true
 }
 // let initialState = {
 //     users: [
@@ -118,6 +122,9 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
         case SET_TOTAL_USERS_COUNT:
             return {...state, totalPagesCount: action.totalCount}
 
+        case TOGGLE_IS_FETCHING:
+            return {...state, isFetching: action.isFetching}
+
         default:
             return state
     }
@@ -128,6 +135,7 @@ export const unfollowAC = (userId: string) => ({type: UNFOLLOW, userId})
 export const setUsersAC = (users: usersArrayType) => ({type: SET_USERS, users})
 export const setCurrentPageAC = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage})
 export const setTotalUsersCountAC = (totalCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalCount})
+export const toggleIsFetchingAC = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching})
 
 
 // export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {

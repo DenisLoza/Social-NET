@@ -3,13 +3,14 @@ import {
     followAC,
     setCurrentPageAC,
     setTotalUsersCountAC,
-    setUsersAC,
+    setUsersAC, toggleIsFetchingAC,
     unfollowAC,
     usersArrayType
 } from "../../redux/usersPageReducer";
 import React from "react";
 import axios from "axios";
 import UsersFunctional from "./UsersFunctional";
+import {Preloader} from "../common/Preloader/Preloader";
 
 
 type UsersContainerPageType = {
@@ -25,13 +26,25 @@ class UsersC extends React.Component<any, any>{
     //     });
     // }
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
+        // когда начинается запрос на сервер лоадер появляется на странице
+        this.props.toggleIsFetching(true)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).
+        then(response => {
+            // когда будет получен ответ от сервера лоадер исчезнет со страницы
+            this.props.toggleIsFetching(false)
             this.props.setUsers(response.data.items)
+            // this.props.setTotalUsersCount(response.data.totalCount)
+
         });
     }
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
+        // когда начинается запрос на сервер лоадер появляется на странице
+        this.props.toggleIsFetching(true)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).
+        then(response => {
+            // когда будет получен ответ от сервера лоадер исчезнет со страницы
+            this.props.toggleIsFetching(false)
             this.props.setUsers(response.data.items)
             let a = response.data.totalCount
             // если мы получим от сервера общее кол-во пользователей более 100, то отобразить только 100
@@ -45,14 +58,17 @@ class UsersC extends React.Component<any, any>{
     }
 
     render() {
-        return <UsersFunctional totalPagesCount={this.props.totalPagesCount}
-                                pageSize={this.props.pageSize}
-                                currentPage={this.props.currentPage}
-                                onPageChanged={this.onPageChanged}
-                                users={this.props.users}
-                                unfollow={this.props.unfollow}
-                                follow={this.props.follow}
-        />
+        return <>
+            {this.props.isFetching ? <Preloader /> : null}
+            <UsersFunctional totalPagesCount={this.props.totalPagesCount}
+                             pageSize={this.props.pageSize}
+                             currentPage={this.props.currentPage}
+                             onPageChanged={this.onPageChanged}
+                             users={this.props.users}
+                             unfollow={this.props.unfollow}
+                             follow={this.props.follow}
+            />
+        </>
     }
 }
 
@@ -63,7 +79,8 @@ let mapStateToProps = (state: UsersContainerPageType) => {
         users: state.usersPage.users,
         pageSize: state.usersPage.pageSize,
         totalPagesCount: state.usersPage.totalPagesCount,
-        currentPage: state.usersPage.currentPage
+        currentPage: state.usersPage.currentPage,
+        isFetching: state.usersPage.isFetching,
     }
 }
 // передает дочерней компоненте Users ф-ции callback
@@ -83,7 +100,10 @@ let mapDispatchToProps = (dispatch: any) => {
         },
         setTotalUsersCount: (totalCount: number) => {
             dispatch(setTotalUsersCountAC(totalCount))
-        }
+        },
+        toggleIsFetching: (isFetching: boolean) => {
+            dispatch(toggleIsFetchingAC(isFetching))
+        },
     }
 }
 
