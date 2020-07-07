@@ -8,15 +8,18 @@ export type postsType = {
 export type profilePageType = {
     posts: Array<postsType>
     newPostText: string
+    profile: null | object
 }
 export type actionProfilePageType = {
     type: string
     newMessage: string
+    profile: object
 }
 
 
 const ADD_POST_NAME: string = "ADD_POST_NAME"
 const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE"
+const SET_USER_PROFILE: string = "SET_USER_PROFILE"
 
 
 let initialState = {
@@ -27,7 +30,8 @@ let initialState = {
         {id: v1(), message: "What do you mean about?", count: 22},
         {id: v1(), message: "I am so happy!", count: 43},
     ],
-    newPostText: ""
+    newPostText: "",
+    profile: null
 }
 
 const profilePageReducer = (state: profilePageType = initialState, action: actionProfilePageType) => {
@@ -57,6 +61,11 @@ const profilePageReducer = (state: profilePageType = initialState, action: actio
             // stateCopy.newPostText = action.newMessage
             return stateCopy
 
+        case SET_USER_PROFILE:
+            return {
+                ...state, profile: action.profile
+            }
+
         default:
             return state
     }
@@ -66,13 +75,14 @@ export const addPostNameActionCreator = () => {
     return {
         type: ADD_POST_NAME
     }
-};
+}
 // Функция ActionCreator dispatch
 export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {
     return {
         type: UPDATE_TEXT_AREA_CHANGE,
         newMessage: newMessage
     }
-};
+}
+export const setUserProfileAC = (profile: object) => ({type: SET_USER_PROFILE, profile})
 
 export default profilePageReducer

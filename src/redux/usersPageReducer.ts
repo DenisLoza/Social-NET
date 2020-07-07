@@ -1,4 +1,4 @@
-import {v1} from "uuid";
+import {v1} from "uuid"
 import ava_man from "../img/avatar/ava_man.jpg"
 import ava_girl from "../img/avatar/ava_girl.jpg"
 import man_5 from "../img/avatar/man_5.jpg"
@@ -29,12 +29,12 @@ export type actionUsersType = {
     isFetching: boolean
 }
 
-const FOLLOW = "FOLLOW"
-const UNFOLLOW = "UNFOLLOW"
-const SET_USERS = "SET_USERS"
-const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
-const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT"
-const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
+const FOLLOW: string = "FOLLOW"
+const UNFOLLOW: string = "UNFOLLOW"
+const SET_USERS: string = "SET_USERS"
+const SET_CURRENT_PAGE: string = "SET_CURRENT_PAGE"
+const SET_TOTAL_USERS_COUNT: string = "SET_TOTAL_USERS_COUNT"
+const TOGGLE_IS_FETCHING: string = "TOGGLE_IS_FETCHING"
 
 let initialState = {
     users: [],

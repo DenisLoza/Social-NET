@@ -6,11 +6,11 @@ import {
     setUsersAC, toggleIsFetchingAC,
     unfollowAC,
     usersArrayType
-} from "../../redux/usersPageReducer";
-import React from "react";
-import axios from "axios";
-import UsersFunctional from "./UsersFunctional";
-import {Preloader} from "../common/Preloader/Preloader";
+} from "../../redux/usersPageReducer"
+import React from "react"
+import axios from "axios"
+import UsersFunctional from "./UsersFunctional"
+import {Preloader} from "../common/Preloader/Preloader"
 
 
 type UsersContainerPageType = {
@@ -115,4 +115,5 @@ const UsersContainer = connect(mapStateToProps, {
     setTotalUsersCount: setTotalUsersCountAC,
     toggleIsFetching: toggleIsFetchingAC,
 })(UsersC)
+
 export default UsersContainer

@@ -12,4 +12,8 @@ let reducers = combineReducers({
 
 let store = createStore(reducers)
 
+// @ts-ignore
+// для обработки в консоли метода: window.getState()
+window.store = store
+
 export default store

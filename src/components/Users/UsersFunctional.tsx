@@ -1,6 +1,7 @@
 import React from "react"
 import userPhoto from "../../img/avatar/user.png"
 import s from "./Users.module.css"
+import {NavLink} from "react-router-dom"
 
 let UsersFunctional = (props: any) => {
 
@@ -23,11 +24,13 @@ let UsersFunctional = (props: any) => {
         {props.users.map((u: any) => <div key={u.id}>
             <span>
                 <div>
+                    {/*добавляем гиперссылку на профиль каждого пользователя по нажатию на аватар*/}
+                    <NavLink to={"/profile/" + u.id}>
                     <img className={s.img}
                          alt="avatar"
                         // если персональноя аватарка отсутствует, то отобразить общую
-                         src={u.avatarImg ? u.avatarImg : userPhoto}
-                    />
+                         src={u.avatarImg ? u.avatarImg : userPhoto} />
+                    </NavLink>
                 </div>
                 <div>
                     {/*если пользователь followed, то отбразить кнопку unfollow и наоборот*/}
