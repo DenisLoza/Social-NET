@@ -9,8 +9,8 @@ import {
 } from "../../redux/usersPageReducer"
 import React from "react"
 import axios from "axios"
-import UsersFunctional from "./UsersFunctional"
 import {Preloader} from "../common/Preloader/Preloader"
+import UsersFunctional from "./UsersFunctional";
 
 
 type UsersContainerPageType = {
@@ -28,7 +28,9 @@ class UsersC extends React.Component<any, any>{
     componentDidMount() {
         // когда начинается запрос на сервер лоадер появляется на странице
         this.props.toggleIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
+            withCredentials: true
+        }).
         then(response => {
             // когда будет получен ответ от сервера лоадер исчезнет со страницы
             this.props.toggleIsFetching(false)
@@ -41,7 +43,9 @@ class UsersC extends React.Component<any, any>{
         this.props.setCurrentPage(pageNumber)
         // когда начинается запрос на сервер лоадер появляется на странице
         this.props.toggleIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {
+            withCredentials: true
+        }).
         then(response => {
             // когда будет получен ответ от сервера лоадер исчезнет со страницы
             this.props.toggleIsFetching(false)

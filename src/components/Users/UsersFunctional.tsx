@@ -2,6 +2,7 @@ import React from "react"
 import userPhoto from "../../img/avatar/user.png"
 import s from "./Users.module.css"
 import {NavLink} from "react-router-dom"
+import axios from "axios";
 
 let UsersFunctional = (props: any) => {
 
@@ -33,16 +34,34 @@ let UsersFunctional = (props: any) => {
                     </NavLink>
                 </div>
                 <div>
-                    {/*если пользователь followed, то отбразить кнопку unfollow и наоборот*/}
                     {u.followed
-                        ? <button className={s.buttonUnfollow}
-                                  onClick={() => {
-                                      props.unfollow(u.id)
-                                  }}>unfollow</button>
-                        : <button className={s.buttonFollow}
-                                  onClick={() => {
-                                      props.follow(u.id)
-                                  }}>follow</button>}
+                        ? <button onClick={() => {
+                            axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
+                                withCredentials: true,
+                                headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
+                            })
+                                .then(response => {
+                                    // если в ответе мы получили валидную авторизацию, то
+                                    if (response.data.resultCode == 0) {
+                                        // ответ от сервера отправляем в диспатч follow
+                                        props.unfollow(u.id)
+                                    }
+                                })
+                        }}> unfollow </button>
+
+                        : <button onClick={() => {
+                            axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
+                                withCredentials: true,
+                                headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
+                            })
+                                .then(response => {
+                                    // если в ответе мы получили валидную авторизацию, то
+                                    if (response.data.resultCode == 0) {
+                                        // ответ от сервера отправляем в диспатч follow
+                                        props.follow(u.id)
+                                    }
+                                })
+                        }}> follow </button>}
                 </div>
             </span>
             <span>

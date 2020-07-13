@@ -2,8 +2,12 @@
     grid-area: header;
     background-color: yellow; 
 }
-  
 .header img {
     width: 60px;
     padding-left: 5px;
+}
+.loginBlock {
+    cursor: pointer;
+    margin: 20px;
+    float: right;
 }
