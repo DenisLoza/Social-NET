@@ -15,10 +15,11 @@ export type userType = {
 }
 export type usersArrayType = {
     users: Array<userType>
-    pageSize: number,
-    totalPagesCount: number,
-    currentPage: number,
+    pageSize: number
+    totalPagesCount: number
+    currentPage: number
     isFetching: boolean
+    followingInProgress: Array<string>
 }
 export type actionUsersType = {
     type: string
@@ -35,13 +36,15 @@ const SET_USERS: string = "SET_USERS"
 const SET_CURRENT_PAGE: string = "SET_CURRENT_PAGE"
 const SET_TOTAL_USERS_COUNT: string = "SET_TOTAL_USERS_COUNT"
 const TOGGLE_IS_FETCHING: string = "TOGGLE_IS_FETCHING"
+const TOGGLE_IS_FOLLOWING_PROGRESS: string = "TOGGLE_IS_FOLLOWING_PROGRESS"
 
 let initialState = {
     users: [],
     pageSize: 5,
     totalPagesCount: 30,
     currentPage: 1,
-    isFetching: true
+    isFetching: true,
+    followingInProgress: [],
 }
 // let initialState = {
 //     users: [
@@ -125,6 +128,17 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
         case TOGGLE_IS_FETCHING:
             return {...state, isFetching: action.isFetching}
 
+        case TOGGLE_IS_FOLLOWING_PROGRESS:
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    // если true в массив followingInProgress добавиться userId пришедший из action
+                    ? [...state.followingInProgress, action.userId]
+                    // если false, то массив followingInProgress будет отфильтрован так,
+                    // чтобы пришедшаяя в action userId в не попала в отфильтрованный массив
+                    : [state.followingInProgress.filter(id => id !== action.userId)]
+            }
+
         default:
             return state
     }
@@ -136,6 +150,7 @@ export const setUsersAC = (users: usersArrayType) => ({type: SET_USERS, users})
 export const setCurrentPageAC = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage})
 export const setTotalUsersCountAC = (totalCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalCount})
 export const toggleIsFetchingAC = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching})
+export const toggleFollowingProgressAC = (isFetching: boolean, userId: string) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId})
 
 
 // export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {

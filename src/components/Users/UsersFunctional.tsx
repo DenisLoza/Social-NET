@@ -35,7 +35,12 @@ let UsersFunctional = (props: any) => {
                 </div>
                 <div>
                     {u.followed
-                        ? <button onClick={() => {
+                        // если кто-нибудь в массиве равен id пользователя, то вернет true
+                        ? <button disabled={props.followingInProgress.some((id: string) => id === u.id)}
+                                  onClick={() => {
+                                      debugger
+                            // статус загрузки при нажатии на кнопку FOLLOW будет включен
+                            props.toggleFollowingProgress(true, u.id)
                             axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
                                 withCredentials: true,
                                 headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
@@ -46,10 +51,15 @@ let UsersFunctional = (props: any) => {
                                         // ответ от сервера отправляем в диспатч follow
                                         props.unfollow(u.id)
                                     }
+                                    // статус загрузки при нажатии на кнопку FOLLOW будет отменен
+                                    props.toggleFollowingProgress(false, u.id)
                                 })
                         }}> unfollow </button>
-
-                        : <button onClick={() => {
+                        // если кто-нибудь в массиве равен id пользователя, то вернет true
+                        : <button disabled={props.followingInProgress.some((id: string) => id === u.id)}
+                                  onClick={() => {
+                            // статус загрузки при нажатии на кнопку FOLLOW будет включен
+                            props.toggleFollowingProgress(true, u.id)
                             axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
                                 withCredentials: true,
                                 headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
@@ -60,6 +70,8 @@ let UsersFunctional = (props: any) => {
                                         // ответ от сервера отправляем в диспатч follow
                                         props.follow(u.id)
                                     }
+                                    // статус загрузки при нажатии на кнопку FOLLOW будет отменен
+                                    props.toggleFollowingProgress(false, u.id)
                                 })
                         }}> follow </button>}
                 </div>

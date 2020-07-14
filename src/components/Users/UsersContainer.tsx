@@ -3,15 +3,14 @@ import {
     followAC,
     setCurrentPageAC,
     setTotalUsersCountAC,
-    setUsersAC, toggleIsFetchingAC,
+    setUsersAC, toggleFollowingProgressAC, toggleIsFetchingAC,
     unfollowAC,
     usersArrayType
 } from "../../redux/usersPageReducer"
 import React from "react"
-import axios from "axios"
 import {Preloader} from "../common/Preloader/Preloader"
 import UsersFunctional from "./UsersFunctional";
-
+import {usersAPI} from "../../api/api";
 
 type UsersContainerPageType = {
     usersPage: usersArrayType
@@ -19,22 +18,14 @@ type UsersContainerPageType = {
 
 class UsersC extends React.Component<any, any>{
 
-    // constructor(props: any) {
-    //     super(props);
-    //     axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-    //         this.props.setUsers(response.data.items)
-    //     });
-    // }
     componentDidMount() {
         // когда начинается запрос на сервер лоадер появляется на странице
         this.props.toggleIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {
-            withCredentials: true
-        }).
-        then(response => {
+        usersAPI.getUses(this.props.currentPage, this.props.pageSize)
+            .then(data => {
             // когда будет получен ответ от сервера лоадер исчезнет со страницы
             this.props.toggleIsFetching(false)
-            this.props.setUsers(response.data.items)
+            this.props.setUsers(data.items)
             // this.props.setTotalUsersCount(response.data.totalCount)
 
         });
@@ -43,14 +34,12 @@ class UsersC extends React.Component<any, any>{
         this.props.setCurrentPage(pageNumber)
         // когда начинается запрос на сервер лоадер появляется на странице
         this.props.toggleIsFetching(true)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {
-            withCredentials: true
-        }).
-        then(response => {
+        usersAPI.getUses(pageNumber, this.props.pageSize)
+            .then(data => {
             // когда будет получен ответ от сервера лоадер исчезнет со страницы
             this.props.toggleIsFetching(false)
-            this.props.setUsers(response.data.items)
-            let a = response.data.totalCount
+            this.props.setUsers(data.items)
+            let a = data.totalCount
             // если мы получим от сервера общее кол-во пользователей более 100, то отобразить только 100
             if (a > 100) {
                 let b = 100
@@ -71,6 +60,8 @@ class UsersC extends React.Component<any, any>{
                              users={this.props.users}
                              unfollow={this.props.unfollow}
                              follow={this.props.follow}
+                             followingInProgress={this.props.followingInProgress}
+                             toggleFollowingProgress={this.props.toggleFollowingProgress}
             />
         </>
     }
@@ -85,6 +76,7 @@ let mapStateToProps = (state: UsersContainerPageType) => {
         totalPagesCount: state.usersPage.totalPagesCount,
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress,
     }
 }
 // передает дочерней компоненте Users ф-ции callback
@@ -118,6 +110,7 @@ const UsersContainer = connect(mapStateToProps, {
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
     toggleIsFetching: toggleIsFetchingAC,
+    toggleFollowingProgress: toggleFollowingProgressAC,
 })(UsersC)
 
 export default UsersContainer
