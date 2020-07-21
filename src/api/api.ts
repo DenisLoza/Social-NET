@@ -28,6 +28,19 @@ export const usersAPI = {
             .then(response => {
                 return response.data
             })
+    },
+    follow(userId: string) {
+        return instance.post(`follow/${userId}`)
+    },
+    unfollow(userId: string) {
+        return instance.delete(`follow/${userId}`)
+    },
+    getProfile(userId: string) {
+        return instance.get(`profile/` + userId)
     }
 }
-
+export const authAPI = {
+    me() {
+        return instance.get(`auth/me`)
+    }
+}

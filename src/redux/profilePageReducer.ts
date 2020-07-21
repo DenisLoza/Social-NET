@@ -1,4 +1,5 @@
 import {v1} from "uuid";
+import {usersAPI} from "../api/api"
 
 export type postsType = {
     id: string
@@ -84,5 +85,11 @@ export const updateTextAreaChangeActionCreator = (newMessage: string | null) => 
     }
 }
 export const setUserProfileAC = (profile: object) => ({type: SET_USER_PROFILE, profile})
+export const getUserProfileTC = (userId: string) => (dispatch: (arg0: any) => void) => {
+    usersAPI.getProfile(userId)
+        .then(response => {
+            dispatch(setUserProfileAC(response.data))
+        })
+}
 
 export default profilePageReducer

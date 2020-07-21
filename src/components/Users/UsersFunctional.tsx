@@ -2,7 +2,7 @@ import React from "react"
 import userPhoto from "../../img/avatar/user.png"
 import s from "./Users.module.css"
 import {NavLink} from "react-router-dom"
-import axios from "axios";
+import {usersAPI} from "../../api/api"
 
 let UsersFunctional = (props: any) => {
 
@@ -15,14 +15,16 @@ let UsersFunctional = (props: any) => {
     }
 
     return (
-    <div>
-        <div className={s.pageCounter}>
-            {pages.map(p => {
-                return <span className={props.currentPage === p ? s.selectedPage : s.anSelectedPage}
-                             onClick={(e) => {props.onPageChanged(p)}}>{p}</span>
-            })}
-        </div>
-        {props.users.map((u: any) => <div key={u.id}>
+        <div>
+            <div className={s.pageCounter}>
+                {pages.map(p => {
+                    return <span className={props.currentPage === p ? s.selectedPage : s.anSelectedPage}
+                                 onClick={(e) => {
+                                     props.onPageChanged(p)
+                                 }}>{p}</span>
+                })}
+            </div>
+            {props.users.map((u: any) => <div key={u.id}>
             <span>
                 <div>
                     {/*добавляем гиперссылку на профиль каждого пользователя по нажатию на аватар*/}
@@ -30,7 +32,7 @@ let UsersFunctional = (props: any) => {
                     <img className={s.img}
                          alt="avatar"
                         // если персональноя аватарка отсутствует, то отобразить общую
-                         src={u.avatarImg ? u.avatarImg : userPhoto} />
+                         src={u.avatarImg ? u.avatarImg : userPhoto}/>
                     </NavLink>
                 </div>
                 <div>
@@ -38,45 +40,40 @@ let UsersFunctional = (props: any) => {
                         // если кто-нибудь в массиве равен id пользователя, то вернет true
                         ? <button disabled={props.followingInProgress.some((id: string) => id === u.id)}
                                   onClick={() => {
-                                      debugger
-                            // статус загрузки при нажатии на кнопку FOLLOW будет включен
-                            props.toggleFollowingProgress(true, u.id)
-                            axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
-                                withCredentials: true,
-                                headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
-                            })
-                                .then(response => {
-                                    // если в ответе мы получили валидную авторизацию, то
-                                    if (response.data.resultCode == 0) {
-                                        // ответ от сервера отправляем в диспатч follow
-                                        props.unfollow(u.id)
-                                    }
-                                    // статус загрузки при нажатии на кнопку FOLLOW будет отменен
-                                    props.toggleFollowingProgress(false, u.id)
-                                })
-                        }}> unfollow </button>
+                                      props.unfollow(u.id)
+                                      // статус загрузки при нажатии на кнопку FOLLOW будет включен
+                                      // props.toggleFollowingProgress(true, u.id)
+                                      // usersAPI.unfollow(u.id)
+                                      //     .then(response => {
+                                      //         // если в ответе мы получили валидную авторизацию, то
+                                      //         if (response.data.resultCode == 0) {
+                                      //             // ответ от сервера отправляем в диспатч follow
+                                      //             props.unfollow(u.id)
+                                      //         }
+                                      //         // статус загрузки при нажатии на кнопку FOLLOW будет отменен
+                                      //         props.toggleFollowingProgress(false, u.id)
+                                      //     })
+                                  }}> unfollow </button>
                         // если кто-нибудь в массиве равен id пользователя, то вернет true
                         : <button disabled={props.followingInProgress.some((id: string) => id === u.id)}
                                   onClick={() => {
-                            // статус загрузки при нажатии на кнопку FOLLOW будет включен
-                            props.toggleFollowingProgress(true, u.id)
-                            axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
-                                withCredentials: true,
-                                headers: {"API-KEY": "db4e48f9-ec7e-4d71-a9d1-0523c2d4dc78"}
-                            })
-                                .then(response => {
-                                    // если в ответе мы получили валидную авторизацию, то
-                                    if (response.data.resultCode == 0) {
-                                        // ответ от сервера отправляем в диспатч follow
-                                        props.follow(u.id)
-                                    }
-                                    // статус загрузки при нажатии на кнопку FOLLOW будет отменен
-                                    props.toggleFollowingProgress(false, u.id)
-                                })
-                        }}> follow </button>}
+                                      props.follow(u.id)
+                                      // статус загрузки при нажатии на кнопку FOLLOW будет включен
+                                      // props.toggleFollowingProgress(true, u.id)
+                                      // usersAPI.follow(u.id)
+                                      //     .then(response => {
+                                      //         // если в ответе мы получили валидную авторизацию, то
+                                      //         if (response.data.resultCode == 0) {
+                                      //             // ответ от сервера отправляем в диспатч follow
+                                      //             props.follow(u.id)
+                                      //         }
+                                      //         // статус загрузки при нажатии на кнопку FOLLOW будет отменен
+                                      //         props.toggleFollowingProgress(false, u.id)
+                                      //     })
+                                  }}> follow </button>}
                 </div>
             </span>
-            <span>
+                <span>
                 <span>
                     <div>{u.fullName ? u.fullName : u.name}</div>
                     <div>{u.status}</div>
@@ -86,8 +83,8 @@ let UsersFunctional = (props: any) => {
                     <div>{"u.location.city"}</div>
                 </span>
             </span>
-        </div>)}
-    </div>
+            </div>)}
+        </div>
     )
 }
 

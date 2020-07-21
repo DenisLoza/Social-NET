@@ -6,20 +6,25 @@ import {
     updateNewMessageDialogBodyActionCreator
 } from "../../redux/dialogsPageReducer"
 import Dialogs from "./Dialogs"
+import {authType} from "../../redux/authReducer"
+
 
 type containerDialogsPageType = {
     dialogsPage: dialogsPageType;
     dialogs: dialogsType,
     messages: messagesType,
-    newMessageDialogBody: string
+    newMessageDialogBody: string,
+    auth: authType,
+    isAuth: boolean
 }
 
 
-let mapStateToProps = (state: containerDialogsPageType) => {
+let mapStateToProps = (state: containerDialogsPageType ) => {
     return {
         dialogs: state.dialogsPage.dialogs,
         messages: state.dialogsPage.messages,
-        newMessageDialogBody: state.dialogsPage.newMessageDialogBody
+        newMessageDialogBody: state.dialogsPage.newMessageDialogBody,
+        isAuth: state.auth.isAuth
     }
 }
 

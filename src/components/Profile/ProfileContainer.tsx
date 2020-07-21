@@ -1,13 +1,16 @@
 import React from "react"
 import Profile from "./Profile"
-import axios from "axios";
-import {connect} from "react-redux";
-import {profilePageType, setUserProfileAC} from "../../redux/profilePageReducer";
-import {withRouter} from "react-router-dom"
+import {connect} from "react-redux"
+import {getUserProfileTC, profilePageType} from "../../redux/profilePageReducer"
+import {Redirect, withRouter} from "react-router-dom"
+import {authType} from "../../redux/authReducer"
 
 type profileContainerType = {
-    profilePage: profilePageType
+    profilePage: profilePageType,
+    auth: authType,
+    isAuth: boolean,
 }
+
 class ProfileContainer extends React.Component<any, any> {
 
     // все сайд эффекты делаются в методе жизненного цикла
@@ -16,14 +19,17 @@ class ProfileContainer extends React.Component<any, any> {
         // получаем из ответа сервера объект где берем префикс URL /profile/...
         let userId = this.props.match.params.userId
         // если userId не существует, то отобразить userId 2
-        if (!userId) {userId = 2}
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then(response => {
-            this.props.setUserProfile(response.data)
-        })
+        if (!userId) {
+            userId = 2
+        }
+        this.props.getUserProfileTC(userId)
     }
 
     render() {
+        // если пользователь не авторизован, то редирект на страницу авторизации
+        if (!this.props.isAuth ) {
+            return <Redirect to={"/login"}/>
+        }
         return (
             <div>
                 < Profile {...this.props} profile={this.props.profile}/>
@@ -31,12 +37,12 @@ class ProfileContainer extends React.Component<any, any> {
         )
     }
 }
+
 let mapStateToProps = (state: profileContainerType) => ({
-    profile: state.profilePage.profile
+    profile: state.profilePage.profile,
+    isAuth: state.auth.isAuth,
 })
 // подключаем withRouter для передачи URL адреса в стейт
 let WithURLProfileContainer = withRouter(ProfileContainer)
 
-export default connect(mapStateToProps, {
-    setUserProfile: setUserProfileAC
-}) (WithURLProfileContainer)
+export default connect(mapStateToProps, {getUserProfileTC})(WithURLProfileContainer)

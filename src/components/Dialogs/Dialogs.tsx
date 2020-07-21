@@ -2,6 +2,7 @@ import React from 'react'
 import s from './Dialogs.module.css'
 import DialogItem from './DialogItem/DialogItem'
 import Message from "./Message/Message"
+import {Redirect} from "react-router-dom"
 import {dialogsType, messagesType} from "../../redux/dialogsPageReducer"
 
 
@@ -11,6 +12,7 @@ type newDialogsPageType = {
     newMessageDialogBody: string
     updateNewMessageBody: (body: string) => void
     sendDialogMessage: () => void
+    isAuth: boolean
 }
 
 
@@ -27,6 +29,10 @@ const Dialogs = (props: newDialogsPageType) => {
 
     let onSendDialogMessageClick  = () => {
         props.sendDialogMessage()
+    }
+    // если пользователь не авторизован, то редирект на страницу авторизации
+    if (props.isAuth === false) {
+        return <Redirect to={"/login"}/>
     }
 
     return (

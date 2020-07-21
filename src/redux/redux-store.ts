@@ -1,9 +1,10 @@
 import a from "./_state"
-import {combineReducers, createStore} from "redux"
+import {applyMiddleware, combineReducers, createStore} from "redux"
 import profilePageReducer from "./profilePageReducer"
 import dialogsPageReducer from "./dialogsPageReducer"
-import usersPageReducer from "./usersPageReducer";
-import authReducer from "./authReducer";
+import usersPageReducer from "./usersPageReducer"
+import authReducer from "./authReducer"
+import thunkMiddleware from "redux-thunk"
 
 let reducers = combineReducers({
     profilePage: profilePageReducer,
@@ -12,7 +13,7 @@ let reducers = combineReducers({
     auth: authReducer
 })
 
-let store = createStore(reducers)
+let store = createStore(reducers, applyMiddleware(thunkMiddleware))
 
 // @ts-ignore
 // для обработки в консоли метода: window.getState()

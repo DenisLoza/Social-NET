@@ -1,6 +1,8 @@
+import {authAPI} from "../api/api"
+
 const SET_USER_DATE: string = "SET_USER_DATE"
 
-type authType = {
+export type authType = {
     id: number | null
     login: string | null
     email: string | null
@@ -43,5 +45,13 @@ export const setUserData = (data: authType) => {
         data: data
     }
 }
-
+export const getUserDataTC = () => (dispatch: (arg0: any) => void) => {
+    authAPI.me()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                let {data} = response.data
+                dispatch(setUserData(data))
+            }
+        })
+}
 export default authReducer

@@ -4,6 +4,7 @@ import ava_girl from "../img/avatar/ava_girl.jpg"
 import man_5 from "../img/avatar/man_5.jpg"
 import girl_2 from "../img/avatar/girl_2.jpg"
 import man_4 from "../img/avatar/man_4.jpg"
+import {usersAPI} from "../api/api"
 
 export type userType = {
     id: string
@@ -144,14 +145,58 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
     }
 }
 
-export const followAC = (userId: string) => ({type: FOLLOW, userId})
-export const unfollowAC = (userId: string) => ({type: UNFOLLOW, userId})
+export const followSuccessAC = (userId: string) => ({type: FOLLOW, userId})
+export const unfollowSuccessAC = (userId: string) => ({type: UNFOLLOW, userId})
 export const setUsersAC = (users: usersArrayType) => ({type: SET_USERS, users})
 export const setCurrentPageAC = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage})
 export const setTotalUsersCountAC = (totalCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalCount})
 export const toggleIsFetchingAC = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching})
 export const toggleFollowingProgressAC = (isFetching: boolean, userId: string) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId})
 
+// THUNK
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+    return (dispatch: (arg0: any) => void) => {
+        dispatch(toggleIsFetchingAC(true))
+
+        usersAPI.getUses(currentPage, pageSize).then (data => {
+            dispatch(toggleIsFetchingAC(false))
+            dispatch(setUsersAC(data.items))
+            dispatch(setTotalUsersCountAC(data.totalCount))
+        })
+    }
+}
+export const followTC = (userId: string) => {
+    return (dispatch: (arg0: any) => void) => {
+        // статус загрузки при нажатии на кнопку FOLLOW будет включен
+        dispatch(toggleFollowingProgressAC(true, userId))
+        usersAPI.follow(userId)
+            .then(response => {
+                // если в ответе мы получили валидную авторизацию, то
+                if (response.data.resultCode == 0) {
+                    // ответ от сервера отправляем в диспатч follow
+                    dispatch(followSuccessAC(userId))
+                }
+                // статус загрузки при нажатии на кнопку FOLLOW будет отменен
+                dispatch(toggleFollowingProgressAC(false, userId))
+            })
+    }
+}
+export const unfollowTC = (userId: string) => {
+    return (dispatch: (arg0: any) => void) => {
+        // статус загрузки при нажатии на кнопку FOLLOW будет включен
+        dispatch(toggleFollowingProgressAC(true, userId))
+        usersAPI.unfollow(userId)
+            .then(response => {
+                // если в ответе мы получили валидную авторизацию, то
+                if (response.data.resultCode == 0) {
+                    // ответ от сервера отправляем в диспатч follow
+                    dispatch(unfollowSuccessAC(userId))
+                }
+                // статус загрузки при нажатии на кнопку FOLLOW будет отменен
+                dispatch(toggleFollowingProgressAC(false, userId))
+            })
+    }
+}
 
 // export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {
 //     return {
