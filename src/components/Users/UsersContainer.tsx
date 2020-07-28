@@ -8,6 +8,8 @@ import {
 import React from "react"
 import {Preloader} from "../common/Preloader/Preloader"
 import UsersFunctional from "./UsersFunctional"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {compose} from "redux"
 
 
 type UsersContainerPageType = {
@@ -103,11 +105,13 @@ let mapStateToProps = (state: UsersContainerPageType) => {
 //     }
 // }
 
-const UsersContainer = connect(mapStateToProps, {
-    follow: followTC,
-    unfollow: unfollowTC,
-    setCurrentPage: setCurrentPageAC,
-    getUsersThunkCreator: getUsersThunkCreator,
-})(UsersC)
-
-export default UsersContainer
+export default compose(
+    connect(mapStateToProps, {
+        follow: followTC,
+        unfollow: unfollowTC,
+        setCurrentPage: setCurrentPageAC,
+        getUsersThunkCreator: getUsersThunkCreator,
+    }),
+    // HOC авторизации пользователя
+    withAuthRedirect,
+)(UsersC)

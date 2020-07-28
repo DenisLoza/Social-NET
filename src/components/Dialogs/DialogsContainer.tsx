@@ -1,4 +1,3 @@
-// import React from 'react'
 import {connect} from "react-redux"
 import {dialogsPageType, dialogsType, messagesType} from "../../redux/dialogsPageReducer"
 import {
@@ -7,6 +6,9 @@ import {
 } from "../../redux/dialogsPageReducer"
 import Dialogs from "./Dialogs"
 import {authType} from "../../redux/authReducer"
+import React from "react"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {compose} from "redux"
 
 
 type containerDialogsPageType = {
@@ -15,16 +17,15 @@ type containerDialogsPageType = {
     messages: messagesType,
     newMessageDialogBody: string,
     auth: authType,
-    isAuth: boolean
+    // isAuth: boolean
 }
-
 
 let mapStateToProps = (state: containerDialogsPageType ) => {
     return {
         dialogs: state.dialogsPage.dialogs,
         messages: state.dialogsPage.messages,
         newMessageDialogBody: state.dialogsPage.newMessageDialogBody,
-        isAuth: state.auth.isAuth
+        // isAuth: state.auth.isAuth
     }
 }
 
@@ -38,7 +39,8 @@ let mapDispatchToProps = (dispatch: any) => {
         }
     }
 }
-
-const DialogsContainer = connect (mapStateToProps, mapDispatchToProps)(Dialogs)
-
-export default DialogsContainer
+export default compose(
+    connect (mapStateToProps, mapDispatchToProps),
+    // HOC авторизации пользователя
+    withAuthRedirect,
+)(Dialogs)

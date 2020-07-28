@@ -16,6 +16,7 @@ import Login from "./components/Login/Login"
 function App() {
     // route следит только за путем в браузере, если он совпадает
     // с path, тогда рендерит то что в render и удаляет другие рендеры
+
     return (
         <BrowserRouter>
             <div className="app-wrapper">
@@ -25,10 +26,13 @@ function App() {
                     <Route path="/login"
                            render={() => < Login />}/>
                     <Route path="/profile/:userId?"
+                           // @ts-ignore
                            render={() => < ProfileContainer />}/>
                     <Route path="/users"
+                           // @ts-ignore
                            render={() => < UsersContainer />}/>
                     <Route path="/dialogs"
+                           // @ts-ignore
                            render={() => < DialogsContainer />}/>
                     <Route path="/news"
                            render={() => < News />}/>

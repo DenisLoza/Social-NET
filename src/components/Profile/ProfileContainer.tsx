@@ -4,11 +4,13 @@ import {connect} from "react-redux"
 import {getUserProfileTC, profilePageType} from "../../redux/profilePageReducer"
 import {Redirect, withRouter} from "react-router-dom"
 import {authType} from "../../redux/authReducer"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {compose} from "redux"
 
 type profileContainerType = {
     profilePage: profilePageType,
     auth: authType,
-    isAuth: boolean,
+    // isAuth: boolean,
 }
 
 class ProfileContainer extends React.Component<any, any> {
@@ -26,10 +28,6 @@ class ProfileContainer extends React.Component<any, any> {
     }
 
     render() {
-        // если пользователь не авторизован, то редирект на страницу авторизации
-        if (!this.props.isAuth ) {
-            return <Redirect to={"/login"}/>
-        }
         return (
             <div>
                 < Profile {...this.props} profile={this.props.profile}/>
@@ -40,9 +38,12 @@ class ProfileContainer extends React.Component<any, any> {
 
 let mapStateToProps = (state: profileContainerType) => ({
     profile: state.profilePage.profile,
-    isAuth: state.auth.isAuth,
+    // isAuth: state.auth.isAuth,
 })
-// подключаем withRouter для передачи URL адреса в стейт
-let WithURLProfileContainer = withRouter(ProfileContainer)
 
-export default connect(mapStateToProps, {getUserProfileTC})(WithURLProfileContainer)
+export default compose(
+    connect(mapStateToProps, {getUserProfileTC}),
+    withRouter,
+    // HOC авторизации пользователя
+    withAuthRedirect,
+)(ProfileContainer)
