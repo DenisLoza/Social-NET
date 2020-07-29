@@ -9,8 +9,7 @@ import DialogsContainer from "./components/Dialogs/DialogsContainer"
 import UsersContainer from "./components/Users/UsersContainer"
 import ProfileContainer from "./components/Profile/ProfileContainer"
 import {HeaderContainer} from "./components/Header/HeaderContainer"
-import Login from "./components/Login/Login"
-
+import {Login} from "./components/Login/Login"
 
 
 function App() {
@@ -24,22 +23,22 @@ function App() {
                 <Nav/>
                 <div className="app-wrapper-content">
                     <Route path="/login"
-                           render={() => < Login />}/>
+                           render={() => < Login/>}/>
                     <Route path="/profile/:userId?"
-                           // @ts-ignore
-                           render={() => < ProfileContainer />}/>
+                        // @ts-ignore
+                           render={() => < ProfileContainer/>}/>
                     <Route path="/users"
-                           // @ts-ignore
-                           render={() => < UsersContainer />}/>
+                        // @ts-ignore
+                           render={() => < UsersContainer/>}/>
                     <Route path="/dialogs"
-                           // @ts-ignore
-                           render={() => < DialogsContainer />}/>
+                        // @ts-ignore
+                           render={() => < DialogsContainer/>}/>
                     <Route path="/news"
-                           render={() => < News />}/>
+                           render={() => < News/>}/>
                     <Route path="/music"
-                           render={() => < Music />}/>
+                           render={() => < Music/>}/>
                     <Route path="/settings"
-                           render={() => < Settings />}/>
+                           render={() => < Settings/>}/>
                 </div>
             </div>
         </BrowserRouter>

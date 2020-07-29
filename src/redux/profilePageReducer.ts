@@ -1,5 +1,5 @@
-import {v1} from "uuid";
-import {usersAPI} from "../api/api"
+import {v1} from "uuid"
+import {profileAPI, usersAPI} from "../api/api"
 
 export type postsType = {
     id: string
@@ -10,17 +10,20 @@ export type profilePageType = {
     posts: Array<postsType>
     newPostText: string
     profile: null | object
+    status: string
 }
 export type actionProfilePageType = {
     type: string
     newMessage: string
     profile: object
+    status: string
 }
 
 
 const ADD_POST_NAME: string = "ADD_POST_NAME"
 const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE"
 const SET_USER_PROFILE: string = "SET_USER_PROFILE"
+const SET_STATUS: string = "SET_STATUS"
 
 
 let initialState = {
@@ -32,7 +35,8 @@ let initialState = {
         {id: v1(), message: "I am so happy!", count: 43},
     ],
     newPostText: "",
-    profile: null
+    profile: null,
+    status: "",
 }
 
 const profilePageReducer = (state: profilePageType = initialState, action: actionProfilePageType) => {
@@ -66,6 +70,11 @@ const profilePageReducer = (state: profilePageType = initialState, action: actio
             return {
                 ...state, profile: action.profile
             }
+        case SET_STATUS:
+            return {
+                ...state,
+                status: action.status
+            }
 
         default:
             return state
@@ -85,10 +94,25 @@ export const updateTextAreaChangeActionCreator = (newMessage: string | null) => 
     }
 }
 export const setUserProfileAC = (profile: object) => ({type: SET_USER_PROFILE, profile})
+export const setStatusAC = (status: string) => ({type: SET_STATUS, status})
 export const getUserProfileTC = (userId: string) => (dispatch: (arg0: any) => void) => {
     usersAPI.getProfile(userId)
         .then(response => {
             dispatch(setUserProfileAC(response.data))
+        })
+}
+export const getStatusTC = (userId: string) => (dispatch: (arg0: any) => void) => {
+    profileAPI.getStatus(userId)
+        .then(response => {
+            dispatch(setStatusAC(response.data))
+        })
+}
+export const updateStatusTC = (status: string) => (dispatch: (arg0: any) => void) => {
+    profileAPI.updateStatus(status)
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                dispatch(setStatusAC(status))
+            }
         })
 }
 

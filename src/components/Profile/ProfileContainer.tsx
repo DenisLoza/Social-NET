@@ -1,7 +1,7 @@
 import React from "react"
 import Profile from "./Profile"
 import {connect} from "react-redux"
-import {getUserProfileTC, profilePageType} from "../../redux/profilePageReducer"
+import {getStatusTC, getUserProfileTC, profilePageType, updateStatusTC} from "../../redux/profilePageReducer"
 import {Redirect, withRouter} from "react-router-dom"
 import {authType} from "../../redux/authReducer"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
@@ -22,27 +22,33 @@ class ProfileContainer extends React.Component<any, any> {
         let userId = this.props.match.params.userId
         // если userId не существует, то отобразить userId 2
         if (!userId) {
-            userId = 2
+            userId = 8817
         }
         this.props.getUserProfileTC(userId)
+        this.props.getStatusTC(userId)
     }
 
     render() {
         return (
             <div>
-                < Profile {...this.props} profile={this.props.profile}/>
+                < Profile profile={this.props.profile}
+                          status={this.props.getStatusTC}
+                          updateStatus={this.props.updateStatusTC}
+                          {...this.props}
+                />
             </div>
         )
     }
 }
 
 let mapStateToProps = (state: profileContainerType) => ({
+    status: state.profilePage.status,
     profile: state.profilePage.profile,
     // isAuth: state.auth.isAuth,
 })
 
 export default compose(
-    connect(mapStateToProps, {getUserProfileTC}),
+    connect(mapStateToProps, {getUserProfileTC, getStatusTC, updateStatusTC}),
     withRouter,
     // HOC авторизации пользователя
     withAuthRedirect,
