@@ -31,7 +31,6 @@ class ProfileStatus extends React.Component<any, any> {
     }
 
     render() {
-        debugger
         return <div>
             {/*отобразить если editMode: false*/}
             {!this.state.editMode &&

@@ -1,7 +1,7 @@
 import React from "react"
 import Header from "./Header"
 import {connect} from "react-redux"
-import {getUserDataTC} from "../../redux/authReducer"
+import {getUserDataTC, logoutTC} from "../../redux/authReducer"
 
 
 class HeaderC extends React.Component<any, any> {
@@ -22,7 +22,7 @@ const mapStateToProps = (state: any) => {
     }
 }
 // оборачиваем в connect, что даст нам возможность доступа к глобальному state
-export const HeaderContainer = connect(mapStateToProps, {getUserDataTC})(HeaderC)
+export const HeaderContainer = connect(mapStateToProps, {getUserDataTC, logoutTC})(HeaderC)
 
 
 

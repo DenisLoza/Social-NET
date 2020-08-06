@@ -1,35 +1,28 @@
-// import React from 'react'
-import {connect} from "react-redux";
-import {
-    addPostNameActionCreator,
-    updateTextAreaChangeActionCreator,
+import {connect} from "react-redux"
+import {addPostNameActionCreator,
     postsType,
     profilePageType
 } from "../../../redux/profilePageReducer"
-import MyPosts from "./MyPosts";
+import MyPosts from "./MyPosts"
 
 
 type containerMyPostsType = {
     profilePage: profilePageType
     posts: postsType
-    newPostText: string
+    // newPostText: string
 }
 
 let mapStateToProps = (state: containerMyPostsType) => {
     return {
-        newPostText: state.profilePage.newPostText,
+        // newPostText: state.profilePage.newPostText,
         posts: state.profilePage.posts
     }
 }
 
 let mapDispatchToProps = (dispatch: any) => {
     return {
-        updateTextAreaChange: (text: string) => {
-            let action = updateTextAreaChangeActionCreator(text)
-            dispatch(action)
-        },
-        addPostName: () => {
-            dispatch(addPostNameActionCreator())
+        addPostName: (newPostText: string) => {
+            dispatch(addPostNameActionCreator(newPostText))
         }
     }
 }

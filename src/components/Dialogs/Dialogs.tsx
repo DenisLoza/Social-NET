@@ -1,9 +1,10 @@
-import React from 'react'
-import s from './Dialogs.module.css'
-import DialogItem from './DialogItem/DialogItem'
+import React from "react"
+import s from "./Dialogs.module.css"
+import DialogItem from "./DialogItem/DialogItem"
 import Message from "./Message/Message"
 import {Redirect} from "react-router-dom"
 import {dialogsType, messagesType} from "../../redux/dialogsPageReducer"
+import {AddMessageFormRedux, FormDialogsDataType} from "./AddMessageForm"
 
 
 type newDialogsPageType = {
@@ -11,47 +12,35 @@ type newDialogsPageType = {
     messages: Array<messagesType>,
     newMessageDialogBody: string
     updateNewMessageBody: (body: string) => void
-    sendDialogMessage: () => void
+    sendDialogMessage: (body: string) => void
     isAuth: boolean
 }
 
-
 const Dialogs = (props: newDialogsPageType) => {
 
-    let dialogsElemets: JSX.Element[] = props.dialogs.map( d => <DialogItem id={d.id} name={d.name} key={d.id}/>)
-
-    let messagesElements: JSX.Element[] = props.messages.map( m => <Message message={m.message} key={m.id}/>)
-
-    let onUpdateNewMessageDialogBodyChange = (e: any) => {
-        let body = e.target.value
-        props.updateNewMessageBody(body)
-    }
-
-    let onSendDialogMessageClick  = () => {
-        props.sendDialogMessage()
-    }
     // если пользователь не авторизован, то редирект на страницу авторизации
     if (props.isAuth === false) {
         return <Redirect to={"/login"}/>
     }
 
+    let dialogsElemets: JSX.Element[] = props.dialogs.map(d => <DialogItem id={d.id} name={d.name} key={d.id}/>)
+    let messagesElements: JSX.Element[] = props.messages.map(m => <Message message={m.message} key={m.id}/>)
+
+    let addNewMessage = (value: FormDialogsDataType) => {
+        let body = value.newMessageDialogBody
+        props.sendDialogMessage(body)
+    }
+
     return (
         <div className={s.dialogs}>
             <div className={s.dialogItems}>
-                { dialogsElemets }
+                {dialogsElemets}
             </div>
             <div className={s.messages}>
-                <div>{ messagesElements }</div>
-                <div>
-                    <div><textarea value={ props.newMessageDialogBody }
-                                   onChange={ onUpdateNewMessageDialogBodyChange }
-                                   placeholder="Enter your message"
-                    /></div>
-                    <div><button onClick={ onSendDialogMessageClick }>SEND</button></div>
-                </div>
+                <div>{messagesElements}</div>
+                <AddMessageFormRedux onSubmit={addNewMessage}/>
             </div>
         </div>
-
     )
 }
 

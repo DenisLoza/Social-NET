@@ -8,7 +8,6 @@ export type postsType = {
 }
 export type profilePageType = {
     posts: Array<postsType>
-    newPostText: string
     profile: null | object
     status: string
 }
@@ -17,11 +16,11 @@ export type actionProfilePageType = {
     newMessage: string
     profile: object
     status: string
+    newPostText: string
 }
 
 
 const ADD_POST_NAME: string = "ADD_POST_NAME"
-const UPDATE_TEXT_AREA_CHANGE: string = "UPDATE_TEXT_AREA_CHANGE"
 const SET_USER_PROFILE: string = "SET_USER_PROFILE"
 const SET_STATUS: string = "SET_STATUS"
 
@@ -34,7 +33,6 @@ let initialState = {
         {id: v1(), message: "What do you mean about?", count: 22},
         {id: v1(), message: "I am so happy!", count: 43},
     ],
-    newPostText: "",
     profile: null,
     status: "",
 }
@@ -45,27 +43,13 @@ const profilePageReducer = (state: profilePageType = initialState, action: actio
 
     switch (action.type) {
         case ADD_POST_NAME:
-            let newPost = {id: v1(), message: state.newPostText, count: 0}
+            let newPost = {id: v1(), message: action.newPostText, count: 0}
             // делаем копию стейта. Таким образов копируются только примитивы, без вложенных объектов!!!
             stateCopy = {
                 ...state,
-                posts: [...state.posts, newPost],
-                newPostText: ""
+                posts: [...state.posts, newPost]
             }
-            // поэтому дополнительно копируем вложенный объект posts
-            // stateCopy.newPostText = ""
-            // stateCopy.posts = [...state.posts]
-            // stateCopy.posts.push(newPost)
             return stateCopy
-
-        case UPDATE_TEXT_AREA_CHANGE:
-            stateCopy = {
-                ...state,
-                newPostText: action.newMessage
-            }
-            // stateCopy.newPostText = action.newMessage
-            return stateCopy
-
         case SET_USER_PROFILE:
             return {
                 ...state, profile: action.profile
@@ -75,24 +59,18 @@ const profilePageReducer = (state: profilePageType = initialState, action: actio
                 ...state,
                 status: action.status
             }
-
         default:
             return state
     }
 }
 // Функция ActionCreator dispatch
-export const addPostNameActionCreator = () => {
+export const addPostNameActionCreator = (newPostText: string | null) => {
     return {
-        type: ADD_POST_NAME
+        type: ADD_POST_NAME,
+        newPostText: newPostText
     }
 }
 // Функция ActionCreator dispatch
-export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {
-    return {
-        type: UPDATE_TEXT_AREA_CHANGE,
-        newMessage: newMessage
-    }
-}
 export const setUserProfileAC = (profile: object) => ({type: SET_USER_PROFILE, profile})
 export const setStatusAC = (status: string) => ({type: SET_STATUS, status})
 export const getUserProfileTC = (userId: string) => (dispatch: (arg0: any) => void) => {
