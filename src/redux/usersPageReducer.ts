@@ -1,45 +1,16 @@
-import {v1} from "uuid"
-import ava_man from "../img/avatar/ava_man.jpg"
-import ava_girl from "../img/avatar/ava_girl.jpg"
-import man_5 from "../img/avatar/man_5.jpg"
-import girl_2 from "../img/avatar/girl_2.jpg"
-import man_4 from "../img/avatar/man_4.jpg"
 import {usersAPI} from "../api/api"
+import {Dispatch} from "redux"
 
-export type userType = {
-    id: string
-    fullName: string
-    status: string
-    location: { city: string, country: string }
-    avatarImg: any
-    followed: boolean
-}
-export type usersArrayType = {
-    users: Array<userType>
-    pageSize: number
-    totalPagesCount: number
-    currentPage: number
-    isFetching: boolean
-    followingInProgress: Array<string>
-}
-export type actionUsersType = {
-    type: string
-    userId: string
-    users: Array<userType>
-    currentPage: number
-    totalCount: number
-    isFetching: boolean
-}
 
-const FOLLOW: string = "FOLLOW"
-const UNFOLLOW: string = "UNFOLLOW"
-const SET_USERS: string = "SET_USERS"
-const SET_CURRENT_PAGE: string = "SET_CURRENT_PAGE"
-const SET_TOTAL_USERS_COUNT: string = "SET_TOTAL_USERS_COUNT"
-const TOGGLE_IS_FETCHING: string = "TOGGLE_IS_FETCHING"
-const TOGGLE_IS_FOLLOWING_PROGRESS: string = "TOGGLE_IS_FOLLOWING_PROGRESS"
+const FOLLOW = "FOLLOW"
+const UNFOLLOW = "UNFOLLOW"
+const SET_USERS = "SET_USERS"
+const SET_CURRENT_PAGE = "SET_CURRENT_PAGE"
+const SET_TOTAL_USERS_COUNT = "SET_TOTAL_USERS_COUNT"
+const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING"
+const TOGGLE_IS_FOLLOWING_PROGRESS = "TOGGLE_IS_FOLLOWING_PROGRESS"
 
-let initialState = {
+const initialState: usersArrayType = {
     users: [],
     pageSize: 5,
     totalPagesCount: 30,
@@ -92,7 +63,7 @@ let initialState = {
 //     ]
 // }
 
-const usersPageReducer = (state: usersArrayType = initialState, action: actionUsersType) => {
+const usersPageReducer = (state = initialState, action: usersACType): usersArrayType => {
 
     switch (action.type) {
         case FOLLOW:
@@ -130,7 +101,7 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
             return {...state, isFetching: action.isFetching}
 
         case TOGGLE_IS_FOLLOWING_PROGRESS:
-            return {
+            return<usersArrayType> {
                 ...state,
                 followingInProgress: action.isFetching
                     // если true в массив followingInProgress добавиться userId пришедший из action
@@ -144,21 +115,44 @@ const usersPageReducer = (state: usersArrayType = initialState, action: actionUs
             return state
     }
 }
+// ACTION CREATOR
+export type followSuccessACType = { type: typeof FOLLOW, userId: string }
+export const followSuccessAC = (userId: string): followSuccessACType => ({type: FOLLOW, userId})
 
-export const followSuccessAC = (userId: string) => ({type: FOLLOW, userId})
-export const unfollowSuccessAC = (userId: string) => ({type: UNFOLLOW, userId})
-export const setUsersAC = (users: usersArrayType) => ({type: SET_USERS, users})
-export const setCurrentPageAC = (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage})
-export const setTotalUsersCountAC = (totalCount: number) => ({type: SET_TOTAL_USERS_COUNT, totalCount})
-export const toggleIsFetchingAC = (isFetching: boolean) => ({type: TOGGLE_IS_FETCHING, isFetching})
-export const toggleFollowingProgressAC = (isFetching: boolean, userId: string) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId})
+export type unfollowSuccessACType = { type: typeof UNFOLLOW, userId: string }
+export const unfollowSuccessAC = (userId: string): unfollowSuccessACType => ({type: UNFOLLOW, userId})
+
+export type setUsersACType = { type: typeof SET_USERS, users: Array<userType> }
+export const setUsersAC = (users: Array<userType>): setUsersACType => ({type: SET_USERS, users})
+
+export type setCurrentPageACType = { type: typeof SET_CURRENT_PAGE, currentPage: number }
+export const setCurrentPageAC = (currentPage: number): setCurrentPageACType => ({type: SET_CURRENT_PAGE, currentPage})
+
+export type setTotalUsersCountACType = { type: typeof SET_TOTAL_USERS_COUNT, totalCount: number }
+export const setTotalUsersCountAC = (totalCount: number): setTotalUsersCountACType => ({
+    type: SET_TOTAL_USERS_COUNT,
+    totalCount
+})
+
+export type toggleIsFetchingACType = { type: typeof TOGGLE_IS_FETCHING, isFetching: boolean }
+export const toggleIsFetchingAC = (isFetching: boolean): toggleIsFetchingACType => ({
+    type: TOGGLE_IS_FETCHING,
+    isFetching
+})
+
+export type toggleFollowingProgressACType = { type: typeof TOGGLE_IS_FOLLOWING_PROGRESS, isFetching: boolean, userId: string }
+export const toggleFollowingProgressAC = (isFetching: boolean, userId: string): toggleFollowingProgressACType => ({
+    type: TOGGLE_IS_FOLLOWING_PROGRESS,
+    isFetching,
+    userId
+})
 
 // THUNK
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return (dispatch: (arg0: any) => void) => {
+    return (dispatch: Dispatch<usersACType>) => {
         dispatch(toggleIsFetchingAC(true))
 
-        usersAPI.getUses(currentPage, pageSize).then (data => {
+        usersAPI.getUses(currentPage, pageSize).then(data => {
             dispatch(toggleIsFetchingAC(false))
             dispatch(setUsersAC(data.items))
             dispatch(setTotalUsersCountAC(data.totalCount))
@@ -166,7 +160,7 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
     }
 }
 export const followTC = (userId: string) => {
-    return (dispatch: (arg0: any) => void) => {
+    return (dispatch: Dispatch<usersACType>) => {
         // статус загрузки при нажатии на кнопку FOLLOW будет включен
         dispatch(toggleFollowingProgressAC(true, userId))
         usersAPI.follow(userId)
@@ -182,7 +176,7 @@ export const followTC = (userId: string) => {
     }
 }
 export const unfollowTC = (userId: string) => {
-    return (dispatch: (arg0: any) => void) => {
+    return (dispatch: Dispatch<usersACType>) => {
         // статус загрузки при нажатии на кнопку FOLLOW будет включен
         dispatch(toggleFollowingProgressAC(true, userId))
         usersAPI.unfollow(userId)
@@ -197,12 +191,31 @@ export const unfollowTC = (userId: string) => {
             })
     }
 }
-
-// export const updateTextAreaChangeActionCreator = (newMessage: string | null) => {
-//     return {
-//         type: UPDATE_TEXT_AREA_CHANGE,
-//         newMessage: newMessage
-//     }
-// };
-
 export default usersPageReducer
+
+
+export type userType = {
+    id: string
+    fullName: string
+    status: string
+    location: { city: string, country: string }
+    avatarImg: any
+    followed: boolean
+}
+export type usersArrayType = {
+    users: Array<userType>
+    pageSize: number
+    totalPagesCount: number
+    currentPage: number
+    isFetching: boolean
+    followingInProgress: Array<string>
+}
+
+export type usersACType =
+    followSuccessACType
+    | unfollowSuccessACType
+    | setUsersACType
+    | setCurrentPageACType
+    | setTotalUsersCountACType
+    | toggleIsFetchingACType
+    | toggleFollowingProgressACType

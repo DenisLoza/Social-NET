@@ -4,19 +4,10 @@ import DialogItem from "./DialogItem/DialogItem"
 import Message from "./Message/Message"
 import {Redirect} from "react-router-dom"
 import {dialogsType, messagesType} from "../../redux/dialogsPageReducer"
-import {AddMessageFormRedux, FormDialogsDataType} from "./AddMessageForm"
+import {AddMessageFormRedux, formDialogsDataType} from "./AddMessageForm"
 
 
-type newDialogsPageType = {
-    dialogs: Array<dialogsType>,
-    messages: Array<messagesType>,
-    newMessageDialogBody: string
-    updateNewMessageBody: (body: string) => void
-    sendDialogMessage: (body: string) => void
-    isAuth: boolean
-}
-
-const Dialogs = (props: newDialogsPageType) => {
+const Dialogs: React.FC<newDialogsPageType> = (props) => {
 
     // если пользователь не авторизован, то редирект на страницу авторизации
     if (props.isAuth === false) {
@@ -26,7 +17,7 @@ const Dialogs = (props: newDialogsPageType) => {
     let dialogsElemets: JSX.Element[] = props.dialogs.map(d => <DialogItem id={d.id} name={d.name} key={d.id}/>)
     let messagesElements: JSX.Element[] = props.messages.map(m => <Message message={m.message} key={m.id}/>)
 
-    let addNewMessage = (value: FormDialogsDataType) => {
+    let addNewMessage = (value: formDialogsDataType) => {
         let body = value.newMessageDialogBody
         props.sendDialogMessage(body)
     }
@@ -43,5 +34,13 @@ const Dialogs = (props: newDialogsPageType) => {
         </div>
     )
 }
-
 export default Dialogs
+
+type newDialogsPageType = {
+    dialogs: Array<dialogsType>,
+    messages: Array<messagesType>,
+    newMessageDialogBody: string
+    updateNewMessageBody: (body: string) => void
+    sendDialogMessage: (body: string) => void
+    isAuth: boolean
+}

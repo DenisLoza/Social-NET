@@ -1,20 +1,13 @@
 import {connect} from "react-redux"
-import {addPostNameActionCreator,
-    postsType,
-    profilePageType
+import {addPostNameActionCreator, postsType
 } from "../../../redux/profilePageReducer"
 import MyPosts from "./MyPosts"
+import {appStateType} from "../../../redux/redux-store"
 
 
-type containerMyPostsType = {
-    profilePage: profilePageType
-    posts: postsType
-    // newPostText: string
-}
 
-let mapStateToProps = (state: containerMyPostsType) => {
+let mapStateToProps = (state: appStateType): mapStateToPropsType => {
     return {
-        // newPostText: state.profilePage.newPostText,
         posts: state.profilePage.posts
     }
 }
@@ -28,5 +21,9 @@ let mapDispatchToProps = (dispatch: any) => {
 }
 
 const MyPostsContainer = connect (mapStateToProps, mapDispatchToProps)(MyPosts)
+
+type mapStateToPropsType = {
+    posts: Array<postsType>
+}
 
 export default MyPostsContainer

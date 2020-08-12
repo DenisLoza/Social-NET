@@ -2,9 +2,10 @@ import React from "react"
 import userPhoto from "../../img/avatar/user.png"
 import s from "./Users.module.css"
 import {NavLink} from "react-router-dom"
-import {usersAPI} from "../../api/api"
+import {userType} from "../../redux/usersPageReducer"
 
-let UsersFunctional = (props: any) => {
+
+let UsersFunctional: React.FC<usersFunctionalType> = (props) => {
 
     // округляем до большего целого. кол-во отображаемого блока страниц с пользователями
     let pagesCount = Math.ceil(props.totalPagesCount / props.pageSize)
@@ -86,6 +87,18 @@ let UsersFunctional = (props: any) => {
             </div>)}
         </div>
     )
+}
+
+type usersFunctionalType = {
+    totalPagesCount: number
+    pageSize: number
+    currentPage: number
+    users: Array<userType>
+    followingInProgress: Array<string>
+    unfollow: (id: string) => void
+    follow: (id: string) => void
+    toggleFollowingProgress: any
+    onPageChanged: (pageNumber: number) => void
 }
 
 export default UsersFunctional

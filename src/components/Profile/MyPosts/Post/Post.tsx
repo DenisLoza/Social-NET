@@ -1,10 +1,10 @@
-import React from 'react'
-import s from './Post.module.css'
+import React from "react"
+import s from "./Post.module.css"
 import avatar from "../../../../img/avatar/man_5.jpg"
-import {postsType} from "../../../../redux/profilePageReducer";
+import {postsType} from "../../../../redux/profilePageReducer"
 
 
-const Post = (props: postsType) => {
+const Post: React.FC<postsType> = (props) => {
     return (
         <div className={s.post}>
             <div className={s.item}>

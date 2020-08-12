@@ -2,13 +2,15 @@ import React from "react"
 import axios from "axios"
 import s from './Users.module.css'
 import userPhoto from "../../img/avatar/user.png"
-import {userType} from "../../redux/usersPageReducer";
+import {userType} from "../../redux/usersPageReducer"
 
 // type usersPageType = {
 //     users: userType
 //     unfollow: (id: string) => void
 //     follow: (id: string) => void
-// };
+// }
+
+// ДАННАЯ КОМПОНЕНТА НЕ ИСПОЛЬЗУЕТСЯ
 
 let Users = (props: any) => {
 

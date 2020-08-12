@@ -1,18 +1,17 @@
-import React from 'react'
+import React from "react"
 import s from "../Dialogs.module.css"
 import {NavLink} from "react-router-dom"
 
-export type DialogItemType = {
-    id: string
-    name: string
-}
 
-
-const DialogItem = (props: DialogItemType) => {
+const DialogItem: React.FC<dialogItemType> = (props) => {
     let path = "/dialogs/" + props.id;
     return <div className={s.dialog + ' ' + s.active}>
         <NavLink to={path}>{props.name}</NavLink>
     </div>
 }
-
 export default DialogItem
+
+export type dialogItemType = {
+    id: string
+    name: string
+}

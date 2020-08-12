@@ -6,17 +6,10 @@ import {authType} from "../../redux/authReducer"
 import React from "react"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {compose} from "redux"
+import {appStateType} from "../../redux/redux-store"
 
 
-type containerDialogsPageType = {
-    dialogsPage: dialogsPageType;
-    dialogs: dialogsType,
-    messages: messagesType,
-    newMessageDialogBody: string,
-    auth: authType,
-}
-
-let mapStateToProps = (state: containerDialogsPageType ) => {
+let mapStateToProps = (state: appStateType) => {
     return {
         dialogs: state.dialogsPage.dialogs,
         messages: state.dialogsPage.messages,
@@ -35,3 +28,11 @@ export default compose(
     // HOC авторизации пользователя
     withAuthRedirect,
 )(Dialogs)
+
+type containerDialogsPageType = {
+    dialogsPage: dialogsPageType;
+    dialogs: dialogsType,
+    messages: messagesType,
+    newMessageDialogBody: string,
+    auth: authType,
+}

@@ -1,26 +1,9 @@
 import {v1} from "uuid"
 
-export type dialogsType = {
-    id: string
-    name: string
-}
-export type messagesType = {
-    id: string
-    message: string
-}
-export type dialogsPageType = {
-    dialogs: Array<dialogsType>
-    messages: Array<messagesType>
-}
-export type actionDialogsPageType = {
-    type: string
-    body: string
-    newMessageDialogBody: string
-}
 
-const SEND_DIALOG_MESSAGE: string = "SEND_DIALOG_MESSAGE"
+const SEND_DIALOG_MESSAGE = "SEND_DIALOG_MESSAGE"
 
-let initialState = {
+const initialState: dialogsPageType = {
     dialogs: [
         {id: v1(), name: "Denis"},
         {id: v1(), name: "Dmitry"},
@@ -37,29 +20,41 @@ let initialState = {
     ],
 }
 
-const dialogsPageReducer = (state: dialogsPageType = initialState, action: actionDialogsPageType) => {
-
-    // делаем поверхностную копию стейта СПРЕД ОПЕРАТОРОМ(...). Таким образов копируются только примитивы, без вложенных объектов!!!
-    let stateCopy
+const dialogsPageReducer = (state = initialState, action: dialogPageACType): dialogsPageType => {
 
     switch (action.type) {
         case SEND_DIALOG_MESSAGE:
             let newBody = {id: v1(), message: action.newMessageDialogBody}
-            stateCopy = {
-                ...state,
-                messages: [...state.messages, newBody]
+            return<dialogsPageType> {
+                ...state, messages: [...state.messages, newBody]
             }
-            return stateCopy
         default:
             return state
     }
 }
-// Функция ActionCreator dispatch
-export const sendDialogMessageActionCreator = (newMessageDialogBody: string | null) => {
+
+// ACTION CREATOR
+export type sendDialogMessageACType = {type: typeof SEND_DIALOG_MESSAGE, newMessageDialogBody: string | null}
+export const sendDialogMessageActionCreator = (newMessageDialogBody: string | null): sendDialogMessageACType => {
     return {
         type: SEND_DIALOG_MESSAGE,
         newMessageDialogBody: newMessageDialogBody
     }
 }
-
 export default dialogsPageReducer
+
+
+export type dialogsType = {
+    id: string
+    name: string
+}
+export type messagesType = {
+    id: string
+    message: string
+}
+export type dialogsPageType = {
+    dialogs: Array<dialogsType>
+    messages: Array<messagesType>
+}
+export type dialogPageACType =
+    sendDialogMessageACType

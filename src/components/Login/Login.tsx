@@ -7,11 +7,7 @@ import {authType, loginTC} from "../../redux/authReducer"
 import {Redirect} from "react-router-dom"
 import s from "./../common/FormsControls/FormsControls.module.css"
 
-type FormDataType = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
+
 let maxLength30 = maxLengthCreator(30)
 
 const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
@@ -67,3 +63,9 @@ const mapStateToProps = (state: authContainerType) => ({
 })
 
 export default connect(mapStateToProps, {loginTC})(Login)
+
+type FormDataType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}

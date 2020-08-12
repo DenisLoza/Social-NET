@@ -3,20 +3,17 @@ import {
     getUsersThunkCreator,
     setCurrentPageAC,
     followTC, unfollowTC,
-    usersArrayType,
+    userType, setCurrentPageACType,
 } from "../../redux/usersPageReducer"
 import React from "react"
 import {Preloader} from "../common/Preloader/Preloader"
 import UsersFunctional from "./UsersFunctional"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {compose} from "redux"
+import {appStateType} from "../../redux/redux-store"
 
 
-type UsersContainerPageType = {
-    usersPage: usersArrayType
-}
-
-class UsersC extends React.Component<any, any> {
+class UsersC extends React.Component<propsUCType> {
 
     componentDidMount() {
         this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
@@ -34,23 +31,6 @@ class UsersC extends React.Component<any, any> {
 
     onPageChanged = (pageNumber: number) => {
         this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
-        // this.props.setCurrentPage(pageNumber)
-        // // когда начинается запрос на сервер лоадер появляется на странице
-        // this.props.toggleIsFetching(true)
-        // usersAPI.getUses(pageNumber, this.props.pageSize)
-        //     .then(data => {
-        //     // когда будет получен ответ от сервера лоадер исчезнет со страницы
-        //     this.props.toggleIsFetching(false)
-        //     this.props.setUsers(data.items)
-        //     let a = data.totalCount
-        //     // если мы получим от сервера общее кол-во пользователей более 100, то отобразить только 100
-        //     if (a > 100) {
-        //         let b = 100
-        //         this.props.setTotalUsersCount(b)
-        //     } else {
-        //         this.props.setTotalUsersCount(a)
-        //     }
-        // });
     }
 
     render() {
@@ -71,7 +51,7 @@ class UsersC extends React.Component<any, any> {
 }
 
 // передает дочерней компоненте Users данные из state
-let mapStateToProps = (state: UsersContainerPageType) => {
+let mapStateToProps = (state: appStateType): mapStateToPropsType => {
     return {
         users: state.usersPage.users,
         pageSize: state.usersPage.pageSize,
@@ -106,7 +86,9 @@ let mapStateToProps = (state: UsersContainerPageType) => {
 // }
 
 export default compose(
-    connect(mapStateToProps, {
+    connect<mapStateToPropsType, mapDispatchToPropsType,
+        ownPropsType, appStateType>
+    (mapStateToProps, {
         follow: followTC,
         unfollow: unfollowTC,
         setCurrentPage: setCurrentPageAC,
@@ -115,3 +97,22 @@ export default compose(
     // HOC авторизации пользователя
     withAuthRedirect,
 )(UsersC)
+
+type mapStateToPropsType = {
+    currentPage: number
+    pageSize: number
+    totalPagesCount: number
+    isFetching: boolean
+    users: Array<userType>
+    followingInProgress: Array<string>
+}
+type mapDispatchToPropsType = {
+    unfollow: (id: string) => void
+    follow: (id: string) => void
+    setCurrentPage: (currentPage: number) => setCurrentPageACType
+    getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+}
+type ownPropsType = {
+    toggleFollowingProgress: any
+}
+type propsUCType = mapStateToPropsType & mapDispatchToPropsType & ownPropsType

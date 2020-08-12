@@ -1,18 +1,13 @@
 import React from "react"
 import Profile from "./Profile"
 import {connect} from "react-redux"
-import {getStatusTC, getUserProfileTC, profilePageType, updateStatusTC} from "../../redux/profilePageReducer"
+import {getStatusTC, getUserProfileTC, updateStatusTC} from "../../redux/profilePageReducer"
 import {withRouter} from "react-router-dom"
-import {authType} from "../../redux/authReducer"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {compose} from "redux"
+import {appStateType} from "../../redux/redux-store"
 
-type profileContainerType = {
-    profilePage: profilePageType,
-    auth: authType,
-    autorizedUserId: string,
-    isAuth: boolean
-}
+
 
 class ProfileContainer extends React.Component<any, any> {
 
@@ -41,8 +36,7 @@ class ProfileContainer extends React.Component<any, any> {
         )
     }
 }
-
-let mapStateToProps = (state: profileContainerType) => ({
+let mapStateToProps = (state: appStateType): mapStateToPropsType  => ({
     status: state.profilePage.status,
     profile: state.profilePage.profile,
     autorizedUserId: state.auth.id,
@@ -55,3 +49,10 @@ export default compose(
     // HOC авторизации пользователя
     withAuthRedirect,
 )(ProfileContainer)
+
+type mapStateToPropsType = {
+    profile: any,
+    status: string,
+    autorizedUserId: string | null,
+    isAuth: boolean
+}

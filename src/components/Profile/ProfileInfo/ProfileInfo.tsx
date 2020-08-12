@@ -1,10 +1,10 @@
-import React from 'react'
-import s from './ProfileInfo.module.css'
-import {Preloader} from "../../common/Preloader/Preloader";
+import React from "react"
+import s from "./ProfileInfo.module.css"
+import {Preloader} from "../../common/Preloader/Preloader"
 import ProfileStatus from "./ProfileStatus"
 
 
-const ProfileInfo = (props: any) => {
+const ProfileInfo = (props: profileInfoType) => {
     // если данные с сервера не придут, то отрисовать Прелоадер
     if (!props.profile) {
         return < Preloader />
@@ -24,4 +24,11 @@ const ProfileInfo = (props: any) => {
         </div>
     )
 }
+
+type profileInfoType = {
+    profile: any
+    status: string
+    updateStatus: (newStatus: string) => void
+}
+
 export default ProfileInfo

@@ -1,32 +1,18 @@
 import {authAPI} from "../api/api"
 import {stopSubmit} from "redux-form"
+import {Dispatch} from "redux"
 
-const SET_USER_DATE: string = "SET_USER_DATE"
 
-export type authType = {
-    id: number | null
-    login: string | null
-    email: string | null
-    isAuth: boolean
-}
+const SET_USER_DATE = "SET_USER_DATE"
 
-let initialState = {
+const initialState: authType = {
     id: null,
     login: null,
     email: null,
     isAuth: false
 }
-type setUserDataType = {
-    type: string
-    payload: {
-        id: number | null
-        login: string | null
-        email: string | null
-        isAuth: boolean
-    }
-}
 
-const authReducer = (state: authType = initialState, action: setUserDataType) => {
+const authReducer = (state = initialState, action: setUserDataACType): authType => {
     switch (action.type) {
         case SET_USER_DATE:
             return {...state, ...action.payload}
@@ -35,25 +21,22 @@ const authReducer = (state: authType = initialState, action: setUserDataType) =>
     }
 }
 
-// ActionCreator
-export const setUserData = (payload: authType) => {
-    return {
-        type: SET_USER_DATE,
-        payload: payload
-    }
-}
-// THUNKS
-export const getUserDataTC = () => (dispatch: (arg0: any) => void) => {
+// ACTION CREATOR
+type setUserDataType = {type: typeof SET_USER_DATE, payload: authType}
+export const setUserData = (payload: authType): setUserDataType => ({type: SET_USER_DATE, payload: payload})
+
+// THUNK
+export const getUserDataTC = () => (dispatch: Dispatch<setUserDataACType>) => {
     authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 let data = response.data.data
-                let payload = {...data, isAuth: true}
+                let payload: payloadType = {...data, isAuth: true}
                 dispatch(setUserData(payload))
             }
         })
 }
-export const loginTC = (email: string, password: string, rememberMe: boolean) => (dispatch: (arg0: any) => void) => {
+export const loginTC = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch<any>) => {
     authAPI.login(email, password, rememberMe)
         .then(response => {
             if (response.data.resultCode === 0) {
@@ -65,14 +48,29 @@ export const loginTC = (email: string, password: string, rememberMe: boolean) =>
             }
         })
 }
-export const logoutTC = () => (dispatch: (arg0: any) => void) => {
+export const logoutTC = () => (dispatch: Dispatch<setUserDataACType>) => {
     authAPI.logout()
         .then(response => {
             if (response.data.resultCode === 0) {
-                let payload = {id: null, login: null, email: null, isAuth: false}
+                let payload: payloadType = {id: null, login: null, email: null, isAuth: false}
                 dispatch(setUserData(payload))
             }
         })
 }
-
 export default authReducer
+
+
+export type authType = {
+    id: string | null
+    login: string | null
+    email: string | null
+    isAuth: boolean
+}
+export type payloadType = {
+    id: string | null
+    login: string | null
+    email: string | null
+    isAuth: boolean
+}
+export type setUserDataACType =
+    setUserDataType

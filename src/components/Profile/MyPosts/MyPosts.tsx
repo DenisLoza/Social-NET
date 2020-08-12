@@ -2,21 +2,15 @@ import React from "react"
 import s from "./MyPosts.module.css"
 import Post from "./Post/Post"
 import {postsType} from "../../../redux/profilePageReducer"
-import {AddNewPostFormRedux, FormPostDataType} from "./AddNewPostForm"
+import {AddNewPostFormRedux, formPostDataType} from "./AddNewPostForm"
 
-type MyPostsType = {
-    posts: postsType[]
-    newPostText: string
-    addPostName: (body: string) => void
-    // updateTextAreaChange: (newMessage: string) => void
-}
 
-const MyPosts = (props: MyPostsType) => {
+const MyPosts: React.FC<myPostsType> = (props) => {
 
     let postsElements: JSX.Element[] = props.posts
         .map(p => <Post message={p.message} count={p.count} id={p.id} key={p.id}/>)
 
-    let addPost = (value: FormPostDataType) => {
+    let addPost = (value: formPostDataType) => {
         let body = value.newPostText
         props.addPostName(body)
     }
@@ -34,3 +28,8 @@ const MyPosts = (props: MyPostsType) => {
     )
 }
 export default MyPosts
+
+type myPostsType = {
+    posts: Array<postsType>
+    addPostName: (body: string) => void
+}
