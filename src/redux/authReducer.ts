@@ -27,7 +27,7 @@ export const setUserData = (payload: authType): setUserDataType => ({type: SET_U
 
 // THUNK
 export const getUserDataTC = () => (dispatch: Dispatch<setUserDataACType>) => {
-    authAPI.me()
+    return authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 let data = response.data.data

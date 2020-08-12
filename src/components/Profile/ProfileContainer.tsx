@@ -19,6 +19,10 @@ class ProfileContainer extends React.Component<any, any> {
         // если userId не существует, то отобразить userId 2
         if (!userId) {
             userId = this.props.autorizedUserId
+            // если нет id пол-теля, то вернуться на страницу логинизации
+            if (!userId) {
+                this.props.history.push("/login")
+            }
         }
         this.props.getUserProfileTC(userId)
         this.props.getStatusTC(userId)
