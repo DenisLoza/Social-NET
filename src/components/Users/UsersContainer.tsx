@@ -1,6 +1,6 @@
 import {connect} from "react-redux"
 import {
-    getUsersThunkCreator,
+    requestUsersTC,
     setCurrentPageAC,
     followTC, unfollowTC,
     userType, setCurrentPageACType,
@@ -11,12 +11,20 @@ import UsersFunctional from "./UsersFunctional"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {compose} from "redux"
 import {appStateType} from "../../redux/redux-store"
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalPagesCount,
+    getUsers
+} from "../../redux/usersSelectors"
 
 
 class UsersC extends React.Component<propsUCType> {
 
     componentDidMount() {
-        this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
+        this.props.requestUsersTC(this.props.currentPage, this.props.pageSize)
         // когда начинается запрос на сервер лоадер появляется на странице
         // this.props.toggleIsFetching(true)
         // usersAPI.getUses(this.props.currentPage, this.props.pageSize)
@@ -30,7 +38,7 @@ class UsersC extends React.Component<propsUCType> {
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsersThunkCreator(pageNumber, this.props.pageSize)
+        this.props.requestUsersTC(pageNumber, this.props.pageSize)
     }
 
     render() {
@@ -51,14 +59,24 @@ class UsersC extends React.Component<propsUCType> {
 }
 
 // передает дочерней компоненте Users данные из state
+// let mapStateToProps = (state: appStateType): mapStateToPropsType => {
+//     return {
+//         users: state.usersPage.users,
+//         pageSize: state.usersPage.pageSize,
+//         totalPagesCount: state.usersPage.totalPagesCount,
+//         currentPage: state.usersPage.currentPage,
+//         isFetching: state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress,
+//     }
+// }
 let mapStateToProps = (state: appStateType): mapStateToPropsType => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalPagesCount: state.usersPage.totalPagesCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress,
+        users: getUsers(state),
+        pageSize: getPageSize(state),
+        totalPagesCount: getTotalPagesCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
     }
 }
 // передает дочерней компоненте Users ф-ции callback
@@ -92,7 +110,7 @@ export default compose(
         follow: followTC,
         unfollow: unfollowTC,
         setCurrentPage: setCurrentPageAC,
-        getUsersThunkCreator: getUsersThunkCreator,
+        requestUsersTC: requestUsersTC,
     }),
     // HOC авторизации пользователя
     withAuthRedirect,
@@ -110,7 +128,7 @@ type mapDispatchToPropsType = {
     unfollow: (id: string) => void
     follow: (id: string) => void
     setCurrentPage: (currentPage: number) => setCurrentPageACType
-    getUsersThunkCreator: (currentPage: number, pageSize: number) => void
+    requestUsersTC: (currentPage: number, pageSize: number) => void
 }
 type ownPropsType = {
     toggleFollowingProgress: any

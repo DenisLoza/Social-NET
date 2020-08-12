@@ -148,11 +148,12 @@ export const toggleFollowingProgressAC = (isFetching: boolean, userId: string): 
 })
 
 // THUNK
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+export const requestUsersTC = (page: number, pageSize: number) => {
     return (dispatch: Dispatch<usersACType>) => {
         dispatch(toggleIsFetchingAC(true))
-
-        usersAPI.getUses(currentPage, pageSize).then(data => {
+        // отправляем номер текущей страницы пользователей в BLL
+        dispatch(setCurrentPageAC(page))
+        usersAPI.getUses(page, pageSize).then(data => {
             dispatch(toggleIsFetchingAC(false))
             dispatch(setUsersAC(data.items))
             dispatch(setTotalUsersCountAC(data.totalCount))
